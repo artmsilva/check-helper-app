@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design System Storybook</title>
+    <style>
+      /* Import design system */
+      @import "./src/design-system/tokens.css";
+      @import "./src/design-system/typography.css";
+      @import "./src/design-system/components.css";
+      @import "./src/design-system/layout.css";
+
+      /* Reset and base styles */
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: var(--color-background);
+        font-family: var(--font-family-base);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* Navigation Sidebar */
+      .storybook-nav {
+        width: 280px;
+        background: var(--color-surface);
+        border-right: 1px solid var(--color-border);
+        padding: var(--space-4);
+        overflow-y: auto;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 1000;
+      }
+
+      .nav-header {
+        padding-bottom: var(--space-4);
+        border-bottom: 1px solid var(--color-border);
+        margin-bottom: var(--space-4);
+      }
+
+      .nav-logo {
+        font-size: var(--font-size-lg);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-primary-600);
+        margin-bottom: var(--space-1);
+      }
+
+      .nav-subtitle {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+      }
+
+      .nav-section {
+        margin-bottom: var(--space-4);
+      }
+
+      .nav-section-title {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: var(--space-2);
+      }
+
+      .nav-item {
+        display: block;
+        padding: var(--space-2) var(--space-3);
+        color: var(--color-text-primary);
+        text-decoration: none;
+        border-radius: var(--radius-md);
+        font-size: var(--font-size-sm);
+        margin-bottom: var(--space-1);
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+
+      .nav-item:hover {
+        background-color: var(--color-gray-100);
+        color: var(--color-primary-600);
+      }
+
+      .nav-item.active {
+        background-color: var(--color-primary-100);
+        color: var(--color-primary-700);
+        font-weight: var(--font-weight-medium);
+      }
+
+      /* Main Content */
+      .storybook-content {
+        flex: 1;
+        margin-left: 280px;
+        padding: var(--space-6);
+        background: var(--color-background);
+      }
+
+      .content-header {
+        margin-bottom: var(--space-8);
+      }
+
+      .page-title {
+        font-size: var(--font-size-3xl);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-text-primary);
+        margin-bottom: var(--space-2);
+      }
+
+      .page-description {
+        font-size: var(--font-size-lg);
+        color: var(--color-text-secondary);
+        line-height: var(--line-height-relaxed);
+      }
+
+      /* Story Sections */
+      .story-section {
+        display: none;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .story-section.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .section {
+        margin-bottom: var(--space-8);
+        background: var(--color-surface);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--color-border);
+        box-shadow: var(--shadow-sm);
+        overflow: hidden;
+      }
+
+      .section-header {
+        padding: var(--space-6);
+        background: var(--color-gray-50);
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      .section-title {
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--space-2);
+        color: var(--color-text-primary);
+      }
+
+      .section-description {
+        font-size: var(--font-size-base);
+        color: var(--color-text-secondary);
+        line-height: var(--line-height-relaxed);
+      }
+
+      .section-content {
+        padding: var(--space-6);
+      }
+
+      /* Example Groups */
+      .example-group {
+        margin-bottom: var(--space-8);
+      }
+
+      .example-group:last-child {
+        margin-bottom: 0;
+      }
+
+      .example-title {
+        font-size: var(--font-size-lg);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-text-primary);
+        margin-bottom: var(--space-4);
+        padding-bottom: var(--space-2);
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      .example-grid {
+        display: grid;
+        gap: var(--space-4);
+        margin-bottom: var(--space-4);
+      }
+
+      .example-item {
+        padding: var(--space-4);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        background: var(--color-white);
+        transition: all 0.2s ease;
+      }
+
+      .example-item:hover {
+        border-color: var(--color-primary-300);
+        box-shadow: var(--shadow-base);
+      }
+
+      .example-label {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        color: var(--color-text-secondary);
+        margin-bottom: var(--space-2);
+      }
+
+      .example-demo {
+        margin-bottom: var(--space-3);
+      }
+
+      /* Color specific styles */
+      .color-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      }
+
+      .color-swatch {
+        width: 100%;
+        height: 80px;
+        border-radius: var(--radius-md);
+        margin-bottom: var(--space-3);
+        border: 1px solid var(--color-border);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .color-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: var(--space-2);
+        font-size: var(--font-size-xs);
+        font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+      }
+
+      /* Typography styles */
+      .typography-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+      }
+
+      .typography-demo {
+        padding: var(--space-4);
+        border-left: 3px solid var(--color-primary-500);
+        background: var(--color-gray-50);
+      }
+
+      /* Component styles */
+      .component-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      }
+
+      .component-demo {
+        padding: var(--space-6);
+        background: var(--color-gray-50);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--space-4);
+      }
+
+      /* Spacing demo */
+      .spacing-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      }
+
+      .spacing-demo {
+        background: var(--color-primary-100);
+        border-radius: var(--radius-base);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-primary-700);
+        font-weight: var(--font-weight-medium);
+        font-size: var(--font-size-sm);
+        min-height: 60px;
+      }
+
+      /* Code block */
+      .code-block {
+        background: var(--color-gray-900);
+        color: var(--color-gray-100);
+        padding: var(--space-4);
+        border-radius: var(--radius-md);
+        font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+        font-size: var(--font-size-sm);
+        overflow-x: auto;
+        margin-top: var(--space-3);
+        white-space: pre-wrap;
+      }
+
+      .token-value {
+        font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+        font-size: var(--font-size-xs);
+        color: var(--color-text-muted);
+        background: var(--color-gray-100);
+        padding: var(--space-1) var(--space-2);
+        border-radius: var(--radius-base);
+        display: inline-block;
+      }
+
+      /* Shadow demo */
+      .shadow-demo {
+        width: 100%;
+        height: 80px;
+        background: white;
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: var(--space-3);
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+      }
+
+      /* Mobile responsiveness */
+      @media (max-width: 768px) {
+        body {
+          flex-direction: column;
+        }
+
+        .storybook-nav {
+          position: relative;
+          width: 100%;
+          height: auto;
+        }
+
+        .storybook-content {
+          margin-left: 0;
+          padding: var(--space-4);
+        }
+
+        .color-grid,
+        .component-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .spacing-grid {
+          grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Sidebar -->
+    <nav class="storybook-nav">
+      <div class="nav-header">
+        <div class="nav-logo">Design System</div>
+        <div class="nav-subtitle">Interactive Documentation</div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Foundation</div>
+        <a href="#" class="nav-item active" data-section="colors">Colors</a>
+        <a href="#" class="nav-item" data-section="typography">Typography</a>
+        <a href="#" class="nav-item" data-section="spacing">Spacing</a>
+        <a href="#" class="nav-item" data-section="shadows">Shadows</a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Components</div>
+        <a href="#" class="nav-item" data-section="buttons">Buttons</a>
+        <a href="#" class="nav-item" data-section="forms">Form Elements</a>
+        <a href="#" class="nav-item" data-section="layout">Layout</a>
+        <a href="#" class="nav-item" data-section="cards">Cards</a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Examples</div>
+        <a href="#" class="nav-item" data-section="check-form">Check Form</a>
+        <a href="#" class="nav-item" data-section="patterns">Common Patterns</a>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="storybook-content">
+      <div class="content-header">
+        <h1 class="page-title">Design System</h1>
+        <p class="page-description">
+          Explore our comprehensive design system with interactive examples,
+          design tokens, and reusable components built with vanilla web
+          technologies.
+        </p>
+      </div>
+
+      <!-- Colors Section -->
+      <div id="colors" class="story-section active">
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">Colors</h2>
+            <p class="section-description">
+              Our color palette provides consistent and accessible colors across
+              all interfaces. Each color comes with multiple tints and shades
+              for various use cases.
+            </p>
+          </div>
+          <div class="section-content">
+            <div class="example-group">
+              <h3 class="example-title">Primary Colors</h3>
+              <div class="example-grid color-grid">
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-primary-50)"
+                  >
+                    <div class="color-info">
+                      --color-primary-50<br />#eff6ff
+                    </div>
+                  </div>
+                  <div class="example-label">Primary 50</div>
+                  <div class="token-value">--color-primary-50</div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-primary-100)"
+                  >
+                    <div class="color-info">
+                      --color-primary-100<br />#dbeafe
+                    </div>
+                  </div>
+                  <div class="example-label">Primary 100</div>
+                  <div class="token-value">--color-primary-100</div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-primary-200)"
+                  >
+                    <div class="color-info">
+                      --color-primary-200<br />#bfdbfe
+                    </div>
+                  </div>
+                  <div class="example-label">Primary 200</div>
+                  <div class="token-value">--color-primary-200</div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-primary-300)"
+                  >
+                    <div class="color-info">
+                      --color-primary-300<br />#93c5fd
+                    </div>
+                  </div>
+                  <div class="example-label">Primary 300</div>
+                  <div class="token-value">--color-primary-300</div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-primary-400)"
+                  >
+                    <div class="color-info">
+                      --color-primary-400<br />#60a5fa
+                    </div>
+                  </div>
+                  <div class="example-label">Primary 400</div>
+                  <div class="token-value">--color-primary-400</div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-primary-500)"
+                  >
+                    <div class="color-info">
+                      --color-primary-500<br />#3b82f6
+                    </div>
+                  </div>
+                  <div class="example-label">Primary 500 (Main)</div>
+                  <div class="token-value">--color-primary-500</div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-primary-600)"
+                  >
+                    <div class="color-info">
+                      --color-primary-600<br />#2563eb
+                    </div>
+                  </div>
+                  <div class="example-label">Primary 600</div>
+                  <div class="token-value">--color-primary-600</div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-primary-700)"
+                  >
+                    <div class="color-info">
+                      --color-primary-700<br />#1d4ed8
+                    </div>
+                  </div>
+                  <div class="example-label">Primary 700</div>
+                  <div class="token-value">--color-primary-700</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="example-group">
+              <h3 class="example-title">Gray Scale</h3>
+              <div class="example-grid color-grid">
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-gray-50)"
+                  >
+                    <div class="color-info">--color-gray-50<br />#f9fafb</div>
+                  </div>
+                  <div class="example-label">Gray 50</div>
+                  <div class="token-value">--color-gray-50</div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-gray-100)"
+                  >
+                    <div class="color-info">--color-gray-100<br />#f3f4f6</div>
+                  </div>
+                  <div class="example-label">Gray 100</div>
+                  <div class="token-value">--color-gray-100</div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-gray-300)"
+                  >
+                    <div class="color-info">--color-gray-300<br />#d1d5db</div>
+                  </div>
+                  <div class="example-label">Gray 300</div>
+                  <div class="token-value">--color-gray-300</div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-gray-500)"
+                  >
+                    <div class="color-info">--color-gray-500<br />#6b7280</div>
+                  </div>
+                  <div class="example-label">Gray 500</div>
+                  <div class="token-value">--color-gray-500</div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-gray-700)"
+                  >
+                    <div class="color-info">--color-gray-700<br />#374151</div>
+                  </div>
+                  <div class="example-label">Gray 700</div>
+                  <div class="token-value">--color-gray-700</div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-gray-900)"
+                  >
+                    <div class="color-info">--color-gray-900<br />#111827</div>
+                  </div>
+                  <div class="example-label">Gray 900</div>
+                  <div class="token-value">--color-gray-900</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="example-group">
+              <h3 class="example-title">Semantic Colors</h3>
+              <div class="example-grid color-grid">
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-background)"
+                  >
+                    <div class="color-info">--color-background</div>
+                  </div>
+                  <div class="example-label">Background</div>
+                  <div class="token-value">--color-background</div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-surface)"
+                  >
+                    <div class="color-info">--color-surface</div>
+                  </div>
+                  <div class="example-label">Surface</div>
+                  <div class="token-value">--color-surface</div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--color-border)"
+                  >
+                    <div class="color-info">--color-border</div>
+                  </div>
+                  <div class="example-label">Border</div>
+                  <div class="token-value">--color-border</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typography Section -->
+      <div id="typography" class="story-section">
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">Typography</h2>
+            <p class="section-description">
+              A carefully crafted type scale with semantic naming for consistent
+              text hierarchy and readability.
+            </p>
+          </div>
+          <div class="section-content">
+            <div class="example-group">
+              <h3 class="example-title">Font Sizes</h3>
+              <div class="example-grid typography-grid">
+                <div class="example-item">
+                  <div
+                    class="typography-demo"
+                    style="font-size: var(--font-size-3xl)"
+                  >
+                    Heading 1 - Extra Large
+                  </div>
+                  <div class="example-label">
+                    font-size: var(--font-size-3xl) • 30px
+                  </div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="typography-demo"
+                    style="font-size: var(--font-size-2xl)"
+                  >
+                    Heading 2 - Large
+                  </div>
+                  <div class="example-label">
+                    font-size: var(--font-size-2xl) • 24px
+                  </div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="typography-demo"
+                    style="font-size: var(--font-size-xl)"
+                  >
+                    Heading 3 - Medium
+                  </div>
+                  <div class="example-label">
+                    font-size: var(--font-size-xl) • 20px
+                  </div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="typography-demo"
+                    style="font-size: var(--font-size-lg)"
+                  >
+                    Heading 4 - Small
+                  </div>
+                  <div class="example-label">
+                    font-size: var(--font-size-lg) • 18px
+                  </div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="typography-demo"
+                    style="font-size: var(--font-size-base)"
+                  >
+                    Body text - Regular
+                  </div>
+                  <div class="example-label">
+                    font-size: var(--font-size-base) • 16px
+                  </div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="typography-demo"
+                    style="font-size: var(--font-size-sm)"
+                  >
+                    Small text - Caption
+                  </div>
+                  <div class="example-label">
+                    font-size: var(--font-size-sm) • 14px
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="example-group">
+              <h3 class="example-title">Font Weights</h3>
+              <div class="example-grid typography-grid">
+                <div class="example-item">
+                  <div
+                    class="typography-demo"
+                    style="font-weight: var(--font-weight-normal)"
+                  >
+                    Normal Weight (400)
+                  </div>
+                  <div class="example-label">
+                    font-weight: var(--font-weight-normal)
+                  </div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="typography-demo"
+                    style="font-weight: var(--font-weight-medium)"
+                  >
+                    Medium Weight (500)
+                  </div>
+                  <div class="example-label">
+                    font-weight: var(--font-weight-medium)
+                  </div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="typography-demo"
+                    style="font-weight: var(--font-weight-semibold)"
+                  >
+                    Semibold Weight (600)
+                  </div>
+                  <div class="example-label">
+                    font-weight: var(--font-weight-semibold)
+                  </div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="typography-demo"
+                    style="font-weight: var(--font-weight-bold)"
+                  >
+                    Bold Weight (700)
+                  </div>
+                  <div class="example-label">
+                    font-weight: var(--font-weight-bold)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spacing Section -->
+      <div id="spacing" class="story-section">
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">Spacing</h2>
+            <p class="section-description">
+              Consistent spacing scale based on a 4px base unit for harmonious
+              layouts and visual rhythm.
+            </p>
+          </div>
+          <div class="section-content">
+            <div class="example-group">
+              <h3 class="example-title">Spacing Scale</h3>
+              <div class="example-grid spacing-grid">
+                <div class="example-item">
+                  <div class="spacing-demo" style="padding: var(--space-1)">
+                    4px
+                  </div>
+                  <div class="example-label">--space-1</div>
+                  <div class="token-value">0.25rem</div>
+                </div>
+                <div class="example-item">
+                  <div class="spacing-demo" style="padding: var(--space-2)">
+                    8px
+                  </div>
+                  <div class="example-label">--space-2</div>
+                  <div class="token-value">0.5rem</div>
+                </div>
+                <div class="example-item">
+                  <div class="spacing-demo" style="padding: var(--space-3)">
+                    12px
+                  </div>
+                  <div class="example-label">--space-3</div>
+                  <div class="token-value">0.75rem</div>
+                </div>
+                <div class="example-item">
+                  <div class="spacing-demo" style="padding: var(--space-4)">
+                    16px
+                  </div>
+                  <div class="example-label">--space-4</div>
+                  <div class="token-value">1rem</div>
+                </div>
+                <div class="example-item">
+                  <div class="spacing-demo" style="padding: var(--space-5)">
+                    20px
+                  </div>
+                  <div class="example-label">--space-5</div>
+                  <div class="token-value">1.25rem</div>
+                </div>
+                <div class="example-item">
+                  <div class="spacing-demo" style="padding: var(--space-6)">
+                    24px
+                  </div>
+                  <div class="example-label">--space-6</div>
+                  <div class="token-value">1.5rem</div>
+                </div>
+                <div class="example-item">
+                  <div class="spacing-demo" style="padding: var(--space-8)">
+                    32px
+                  </div>
+                  <div class="example-label">--space-8</div>
+                  <div class="token-value">2rem</div>
+                </div>
+                <div class="example-item">
+                  <div class="spacing-demo" style="padding: var(--space-12)">
+                    48px
+                  </div>
+                  <div class="example-label">--space-12</div>
+                  <div class="token-value">3rem</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shadows Section -->
+      <div id="shadows" class="story-section">
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">Shadows</h2>
+            <p class="section-description">
+              Elevation system using carefully crafted shadows to create depth
+              and hierarchy in the interface.
+            </p>
+          </div>
+          <div class="section-content">
+            <div class="example-group">
+              <h3 class="example-title">Shadow Scale</h3>
+              <div class="example-grid color-grid">
+                <div class="example-item">
+                  <div class="shadow-demo" style="box-shadow: var(--shadow-sm)">
+                    Small Shadow
+                  </div>
+                  <div class="example-label">--shadow-sm</div>
+                  <div class="token-value">0 1px 2px rgba(0,0,0,0.05)</div>
+                </div>
+                <div class="example-item">
+                  <div
+                    class="shadow-demo"
+                    style="box-shadow: var(--shadow-base)"
+                  >
+                    Base Shadow
+                  </div>
+                  <div class="example-label">--shadow-base</div>
+                  <div class="token-value">0 1px 3px rgba(0,0,0,0.1)</div>
+                </div>
+                <div class="example-item">
+                  <div class="shadow-demo" style="box-shadow: var(--shadow-md)">
+                    Medium Shadow
+                  </div>
+                  <div class="example-label">--shadow-md</div>
+                  <div class="token-value">0 4px 6px rgba(0,0,0,0.1)</div>
+                </div>
+                <div class="example-item">
+                  <div class="shadow-demo" style="box-shadow: var(--shadow-lg)">
+                    Large Shadow
+                  </div>
+                  <div class="example-label">--shadow-lg</div>
+                  <div class="token-value">0 10px 15px rgba(0,0,0,0.1)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons Section -->
+      <div id="buttons" class="story-section">
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">Buttons</h2>
+            <p class="section-description">
+              Interactive button components with consistent styling and behavior
+              patterns.
+            </p>
+          </div>
+          <div class="section-content">
+            <div class="example-group">
+              <h3 class="example-title">Button Variants</h3>
+              <div class="component-demo">
+                <form-button variant="primary" size="base"
+                  >Primary Button</form-button
+                >
+                <form-button variant="secondary" size="base"
+                  >Secondary Button</form-button
+                >
+                <form-button variant="outline" size="base"
+                  >Outline Button</form-button
+                >
+              </div>
+              <div class="code-block">
+                &lt;form-button variant="primary"&gt;Primary
+                Button&lt;/form-button&gt; &lt;form-button
+                variant="secondary"&gt;Secondary Button&lt;/form-button&gt;
+                &lt;form-button variant="outline"&gt;Outline
+                Button&lt;/form-button&gt;
+              </div>
+            </div>
+
+            <div class="example-group">
+              <h3 class="example-title">Button Sizes</h3>
+              <div class="component-demo">
+                <form-button variant="primary" size="sm">Small</form-button>
+                <form-button variant="primary" size="base">Base</form-button>
+                <form-button variant="primary" size="lg">Large</form-button>
+              </div>
+              <div class="code-block">
+                &lt;form-button size="sm"&gt;Small&lt;/form-button&gt;
+                &lt;form-button size="base"&gt;Base&lt;/form-button&gt;
+                &lt;form-button size="lg"&gt;Large&lt;/form-button&gt;
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Elements Section -->
+      <div id="forms" class="story-section">
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">Form Elements</h2>
+            <p class="section-description">
+              Form inputs and labels with consistent styling and accessibility
+              features.
+            </p>
+          </div>
+          <div class="section-content">
+            <div class="example-group">
+              <h3 class="example-title">Input Fields</h3>
+              <div class="component-demo">
+                <form-label for="demo-input">Email Address</form-label>
+                <form-input
+                  id="demo-input"
+                  type="email"
+                  placeholder="Enter your email"
+                ></form-input>
+              </div>
+              <div class="code-block">
+                &lt;form-label for="email"&gt;Email Address&lt;/form-label&gt;
+                &lt;form-input id="email" type="email" placeholder="Enter your
+                email"&gt;&lt;/form-input&gt;
+              </div>
+            </div>
+
+            <div class="example-group">
+              <h3 class="example-title">Input Variants</h3>
+              <div class="component-demo">
+                <form-input type="text" placeholder="Text input"></form-input>
+                <form-input
+                  type="number"
+                  placeholder="Number input"
+                ></form-input>
+                <form-input type="date"></form-input>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Layout Section -->
+      <div id="layout" class="story-section">
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">Layout Components</h2>
+            <p class="section-description">
+              Flexible layout components for building consistent interfaces with
+              proper spacing and alignment.
+            </p>
+          </div>
+          <div class="section-content">
+            <div class="example-group">
+              <h3 class="example-title">Stack Layout</h3>
+              <div class="component-demo">
+                <ui-stack spacing="4">
+                  <div
+                    style="
+                      background: var(--color-primary-100);
+                      padding: var(--space-4);
+                      border-radius: var(--radius-md);
+                    "
+                  >
+                    Item 1
+                  </div>
+                  <div
+                    style="
+                      background: var(--color-primary-100);
+                      padding: var(--space-4);
+                      border-radius: var(--radius-md);
+                    "
+                  >
+                    Item 2
+                  </div>
+                  <div
+                    style="
+                      background: var(--color-primary-100);
+                      padding: var(--space-4);
+                      border-radius: var(--radius-md);
+                    "
+                  >
+                    Item 3
+                  </div>
+                </ui-stack>
+              </div>
+              <div class="code-block">
+                &lt;ui-stack spacing="4"&gt; &lt;div&gt;Item 1&lt;/div&gt;
+                &lt;div&gt;Item 2&lt;/div&gt; &lt;div&gt;Item 3&lt;/div&gt;
+                &lt;/ui-stack&gt;
+              </div>
+            </div>
+
+            <div class="example-group">
+              <h3 class="example-title">Inline Layout</h3>
+              <div class="component-demo">
+                <ui-inline spacing="2">
+                  <form-button variant="primary" size="sm"
+                    >Button 1</form-button
+                  >
+                  <form-button variant="secondary" size="sm"
+                    >Button 2</form-button
+                  >
+                  <form-button variant="outline" size="sm"
+                    >Button 3</form-button
+                  >
+                </ui-inline>
+              </div>
+              <div class="code-block">
+                &lt;ui-inline spacing="2"&gt; &lt;form-button&gt;Button
+                1&lt;/form-button&gt; &lt;form-button&gt;Button
+                2&lt;/form-button&gt; &lt;form-button&gt;Button
+                3&lt;/form-button&gt; &lt;/ui-inline&gt;
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cards Section -->
+      <div id="cards" class="story-section">
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">Cards</h2>
+            <p class="section-description">
+              Container components for grouping related content with consistent
+              styling and spacing.
+            </p>
+          </div>
+          <div class="section-content">
+            <div class="example-group">
+              <h3 class="example-title">Basic Card</h3>
+              <div class="component-demo">
+                <ui-card>
+                  <ui-stack spacing="4">
+                    <ui-heading level="3">Card Title</ui-heading>
+                    <ui-text
+                      >This is some example content inside a card component.
+                      Cards are useful for grouping related information
+                      together.</ui-text
+                    >
+                    <ui-inline spacing="2">
+                      <form-button variant="primary" size="sm"
+                        >Action</form-button
+                      >
+                      <form-button variant="secondary" size="sm"
+                        >Cancel</form-button
+                      >
+                    </ui-inline>
+                  </ui-stack>
+                </ui-card>
+              </div>
+              <div class="code-block">
+                &lt;ui-card&gt; &lt;ui-stack spacing="4"&gt; &lt;ui-heading
+                level="3"&gt;Card Title&lt;/ui-heading&gt; &lt;ui-text&gt;Card
+                content...&lt;/ui-text&gt; &lt;ui-inline spacing="2"&gt;
+                &lt;form-button&gt;Action&lt;/form-button&gt;
+                &lt;form-button&gt;Cancel&lt;/form-button&gt; &lt;/ui-inline&gt;
+                &lt;/ui-stack&gt; &lt;/ui-card&gt;
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Check Form Section -->
+      <div id="check-form" class="story-section">
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">Check Form Example</h2>
+            <p class="section-description">
+              A complete example showing how our design system components work
+              together in a real application.
+            </p>
+          </div>
+          <div class="section-content">
+            <div class="example-group">
+              <h3 class="example-title">Complete Check Writing Form</h3>
+              <div class="component-demo">
+                <ui-grid columns="2" gap="6">
+                  <check-form></check-form>
+                  <check-preview></check-preview>
+                </ui-grid>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Patterns Section -->
+      <div id="patterns" class="story-section">
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">Common Patterns</h2>
+            <p class="section-description">
+              Reusable UI patterns and combinations that demonstrate best
+              practices with our design system.
+            </p>
+          </div>
+          <div class="section-content">
+            <div class="example-group">
+              <h3 class="example-title">Form Pattern</h3>
+              <div class="component-demo">
+                <ui-card>
+                  <ui-stack spacing="4">
+                    <ui-heading level="3">User Information</ui-heading>
+                    <ui-stack spacing="3">
+                      <ui-stack spacing="1">
+                        <form-label for="name">Full Name</form-label>
+                        <form-input
+                          id="name"
+                          placeholder="Enter your full name"
+                        ></form-input>
+                      </ui-stack>
+                      <ui-stack spacing="1">
+                        <form-label for="email">Email</form-label>
+                        <form-input
+                          id="email"
+                          type="email"
+                          placeholder="Enter your email"
+                        ></form-input>
+                      </ui-stack>
+                      <ui-inline spacing="2">
+                        <form-button variant="primary">Save</form-button>
+                        <form-button variant="secondary">Cancel</form-button>
+                      </ui-inline>
+                    </ui-stack>
+                  </ui-stack>
+                </ui-card>
+              </div>
+            </div>
+
+            <div class="example-group">
+              <h3 class="example-title">Dashboard Pattern</h3>
+              <div class="component-demo">
+                <ui-stack spacing="4">
+                  <ui-heading level="2">Dashboard</ui-heading>
+                  <ui-grid columns="3" gap="4">
+                    <ui-card>
+                      <ui-stack spacing="2">
+                        <ui-text size="sm" color="secondary"
+                          >Total Users</ui-text
+                        >
+                        <ui-heading level="2">1,234</ui-heading>
+                      </ui-stack>
+                    </ui-card>
+                    <ui-card>
+                      <ui-stack spacing="2">
+                        <ui-text size="sm" color="secondary">Revenue</ui-text>
+                        <ui-heading level="2">$12,345</ui-heading>
+                      </ui-stack>
+                    </ui-card>
+                    <ui-card>
+                      <ui-stack spacing="2">
+                        <ui-text size="sm" color="secondary">Growth</ui-text>
+                        <ui-heading level="2">+23%</ui-heading>
+                      </ui-stack>
+                    </ui-card>
+                  </ui-grid>
+                </ui-stack>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- JavaScript for interactivity -->
+    <script type="module">
+      // Import all components
+      import "./src/components/ui/form-input.js";
+      import "./src/components/ui/form-label.js";
+      import "./src/components/ui/form-button.js";
+      import "./src/components/ui/layout-components.js";
+      import "./src/components/check-form.js";
+      import "./src/components/check-preview.js";
+
+      // Navigation functionality
+      const navItems = document.querySelectorAll(".nav-item");
+      const sections = document.querySelectorAll(".story-section");
+
+      navItems.forEach((item) => {
+        item.addEventListener("click", (e) => {
+          e.preventDefault();
+
+          // Remove active class from all nav items
+          navItems.forEach((nav) => nav.classList.remove("active"));
+
+          // Add active class to clicked item
+          item.classList.add("active");
+
+          // Hide all sections
+          sections.forEach((section) => section.classList.remove("active"));
+
+          // Show target section
+          const targetSection = document.getElementById(item.dataset.section);
+          if (targetSection) {
+            targetSection.classList.add("active");
+          }
+        });
+      });
+
+      // Copy to clipboard functionality
+      function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+          // Could add a toast notification here
+          console.log("Copied to clipboard:", text);
+        });
+      }
+
+      // Add copy buttons to token values
+      document.querySelectorAll(".token-value").forEach((token) => {
+        token.style.cursor = "pointer";
+        token.title = "Click to copy";
+        token.addEventListener("click", () => {
+          copyToClipboard(token.textContent);
+        });
+      });
+    </script>
+  </body>
+</html>

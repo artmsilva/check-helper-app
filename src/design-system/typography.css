@@ -1,0 +1,288 @@
+/**
+ * Typography Utilities
+ * Text styling utilities using design tokens
+ */
+
+/* Base typography */
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+}
+
+/* Headings */
+.heading {
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.heading--1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.heading--2 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.heading--3 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+}
+
+.heading--4 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.heading--5 {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+}
+
+.heading--6 {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Text utilities */
+.text {
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+.text--xs {
+  font-size: var(--font-size-xs);
+}
+
+.text--sm {
+  font-size: var(--font-size-sm);
+}
+
+.text--base {
+  font-size: var(--font-size-base);
+}
+
+.text--lg {
+  font-size: var(--font-size-lg);
+}
+
+.text--xl {
+  font-size: var(--font-size-xl);
+}
+
+.text--2xl {
+  font-size: var(--font-size-2xl);
+}
+
+/* Font weights */
+.text--normal {
+  font-weight: var(--font-weight-normal);
+}
+
+.text--medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.text--semibold {
+  font-weight: var(--font-weight-semibold);
+}
+
+.text--bold {
+  font-weight: var(--font-weight-bold);
+}
+
+/* Text colors */
+.text--primary {
+  color: var(--color-text-primary);
+}
+
+.text--secondary {
+  color: var(--color-text-secondary);
+}
+
+.text--muted {
+  color: var(--color-text-muted);
+}
+
+.text--white {
+  color: var(--color-white);
+}
+
+.text--accent {
+  color: var(--color-primary-500);
+}
+
+.text--success {
+  color: #10b981; /* green-500 */
+}
+
+.text--warning {
+  color: #f59e0b; /* amber-500 */
+}
+
+.text--danger {
+  color: #ef4444; /* red-500 */
+}
+
+/* Text alignment */
+.text--left {
+  text-align: left;
+}
+
+.text--center {
+  text-align: center;
+}
+
+.text--right {
+  text-align: right;
+}
+
+.text--justify {
+  text-align: justify;
+}
+
+/* Line height */
+.text--tight {
+  line-height: var(--line-height-tight);
+}
+
+.text--snug {
+  line-height: var(--line-height-snug);
+}
+
+.text--normal {
+  line-height: var(--line-height-normal);
+}
+
+.text--relaxed {
+  line-height: var(--line-height-relaxed);
+}
+
+/* Text decoration */
+.text--underline {
+  text-decoration: underline;
+}
+
+.text--no-underline {
+  text-decoration: none;
+}
+
+.text--line-through {
+  text-decoration: line-through;
+}
+
+/* Text transform */
+.text--uppercase {
+  text-transform: uppercase;
+}
+
+.text--lowercase {
+  text-transform: lowercase;
+}
+
+.text--capitalize {
+  text-transform: capitalize;
+}
+
+/* Text overflow */
+.text--truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text--break-words {
+  word-break: break-word;
+}
+
+.text--no-wrap {
+  white-space: nowrap;
+}
+
+/* Links */
+.link {
+  color: var(--color-primary-500);
+  text-decoration: underline;
+  transition: color var(--transition-fast);
+}
+
+.link:hover {
+  color: var(--color-primary-600);
+}
+
+.link:focus {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+.link--subtle {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+
+.link--subtle:hover {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+}
+
+/* Lists */
+.list {
+  margin: 0;
+  padding: 0;
+}
+
+.list--unstyled {
+  list-style: none;
+}
+
+.list--disc {
+  list-style-type: disc;
+  padding-left: var(--space-6);
+}
+
+.list--decimal {
+  list-style-type: decimal;
+  padding-left: var(--space-6);
+}
+
+.list__item {
+  margin-bottom: var(--space-1);
+}
+
+.list__item:last-child {
+  margin-bottom: 0;
+}
+
+/* Code */
+.code {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Monaco, "Cascadia Code",
+    "Roboto Mono", Consolas, "Courier New", monospace;
+  font-size: var(--font-size-sm);
+  background-color: var(--color-gray-100);
+  color: var(--color-text-primary);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-base);
+}
+
+.code--block {
+  display: block;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* Blockquote */
+.blockquote {
+  margin: 0;
+  padding: var(--space-4);
+  border-left: 4px solid var(--color-primary-500);
+  background-color: var(--color-gray-50);
+  font-style: italic;
+  color: var(--color-text-secondary);
+}
