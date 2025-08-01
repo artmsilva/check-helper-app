@@ -17,7 +17,10 @@ class CheckForm extends HTMLElement {
 
   connectedCallback() {
     this.render();
-    this.attachEventListeners();
+    // Use setTimeout to ensure all child components are fully initialized
+    setTimeout(() => {
+      this.attachEventListeners();
+    }, 0);
   }
 
   render() {
@@ -89,12 +92,21 @@ class CheckForm extends HTMLElement {
   attachEventListeners() {
     // Input change handlers
     const inputs = this.querySelectorAll("form-input");
-    inputs.forEach((input) => {
+    console.log(`Found ${inputs.length} form-input elements`);
+
+    inputs.forEach((input, index) => {
+      console.log(`Setting up listener for input ${index}:`, input.id);
       input.addEventListener("input", (e) => {
+        console.log("Input event received:", e.target.id, e.detail);
         const field = this.getFieldNameFromId(e.target.id);
-        if (field) {
+        if (field && e.detail && e.detail.value !== undefined) {
           this.formData[field] = e.detail.value;
           this.updatePreview();
+        } else {
+          console.warn("Invalid event or missing field mapping:", {
+            field,
+            detail: e.detail,
+          });
         }
       });
     });
@@ -127,10 +139,18 @@ class CheckForm extends HTMLElement {
     const convertedWords = convertAmountToWords(this.formData.amountNumber);
     this.formData.amountWords = convertedWords;
 
-    // Update the input value
+    // Update the input value using the component's setter
     const amountWordsInput = this.querySelector("#amount-words");
     if (amountWordsInput) {
       amountWordsInput.value = convertedWords;
+
+      // Also trigger an input event to ensure the form data is synchronized
+      amountWordsInput.dispatchEvent(
+        new CustomEvent("input", {
+          detail: { value: convertedWords },
+          bubbles: true,
+        })
+      );
     }
 
     this.updatePreview();
