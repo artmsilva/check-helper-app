@@ -62,8 +62,7 @@ function convertWholeNumberToWords(num) {
       if (ten > 0) {
         str += tens[ten];
         if (unit > 0) str += '-' + units[unit];
-      } else if (unit > 0 || (hundred === 0 && ten === 0 && unit === 0)) {
-        // Handle zero case when number is 0
+      } else if (unit > 0) {
         str += units[unit];
       }
     }
