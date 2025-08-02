@@ -21,12 +21,37 @@
    - Active features and deprecated functionality
 
 3. **Review File Structure**: Examine `public/src/` to understand:
+
    - Available components (`components/` directory)
    - Utility functions (`utils/` directory)
    - Current CSS organization (`styles.css` with layers)
    - Import map configuration
 
+4. **Check Tools Directory**: Review `tools/` for available development tools:
+   - CSS linter and auto-fixer (`tools/css-linter/`)
+   - Other development utilities and scripts
+
 **This ensures accurate, context-aware assistance that aligns with the current project state.**
+
+## 🚨 FILE CREATION POLICY
+
+**IMPORTANT**: Before creating any new files in the project root directory, you MUST:
+
+1. **Ask for permission** from the user first
+2. **Explain why** the file needs to be in the root directory
+3. **Suggest alternatives** like placing it in an appropriate subdirectory:
+   - `docs/` for documentation
+   - `tools/` for development tools and scripts
+   - `public/src/` for application code
+   - `.github/` for GitHub-specific files
+
+**Exceptions** (can create without asking):
+
+- Files within existing subdirectories (`docs/`, `tools/`, `public/src/`, etc.)
+- Temporary files for demonstration purposes (with clear naming)
+- Task directories in `docs/tasks/` for tracking work
+
+**Rationale**: Keeps the project root clean and organized, following established project structure patterns.
 
 ---
 

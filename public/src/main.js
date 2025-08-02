@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   root.innerHTML = `
-    <div class="app-container">
+    <div class="app">
       <check-form></check-form>
     </div>
   `;

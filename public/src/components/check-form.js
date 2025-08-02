@@ -31,17 +31,108 @@ class CheckForm extends HTMLElement {
 
   render() {
     this.innerHTML = `
-      <div class="check-editor-container">
-        <div class="editor-header">
-          <h1>✨ Interactive Check Editor</h1>
-          <p>Click on any field in the check below to edit it directly</p>
+      <!-- App Header -->
+      <header class="app-header">
+        <div class="app-header-content">
+          <div class="app-logo">
+            <div class="logo-icon">💳</div>
+            <div class="logo-text">
+              <h1>Check Helper</h1>
+              <span class="logo-tagline">Write checks with confidence</span>
+            </div>
+          </div>
+          <nav class="app-nav">
+            <button class="nav-btn" data-action="print">
+              <span class="nav-icon">🖨️</span>
+              <span class="nav-text">Print</span>
+            </button>
+            <button class="nav-btn" data-action="clear">
+              <span class="nav-icon">🗑️</span>
+              <span class="nav-text">Clear</span>
+            </button>
+            <button class="nav-btn" data-action="help">
+              <span class="nav-icon">❓</span>
+              <span class="nav-text">Help</span>
+            </button>
+          </nav>
         </div>
-        
-        <!-- Full-width Interactive Check -->
-        <div class="interactive-check-container">
-          <check-preview editable="true"></check-preview>
+      </header>
+
+      <!-- Main Content -->
+      <main class="app-main">
+        <div class="app-layout">
+          <!-- Sidebar -->
+          <aside class="app-sidebar">
+            <div class="sidebar-card">
+              <h2 class="sidebar-title">How to use</h2>
+              <div class="instruction-steps">
+                <div class="instruction-step">
+                  <div class="step-number">1</div>
+                  <div class="step-content">
+                    <h3>Click any field</h3>
+                    <p>Tap on the check fields to edit them directly</p>
+                  </div>
+                </div>
+                <div class="instruction-step">
+                  <div class="step-number">2</div>
+                  <div class="step-content">
+                    <h3>Enter amount</h3>
+                    <p>Type the dollar amount - words are generated automatically</p>
+                  </div>
+                </div>
+                <div class="instruction-step">
+                  <div class="step-number">3</div>
+                  <div class="step-content">
+                    <h3>Fill details</h3>
+                    <p>Add payee name, date, and memo as needed</p>
+                  </div>
+                </div>
+                <div class="instruction-step">
+                  <div class="step-number">4</div>
+                  <div class="step-content">
+                    <h3>Print & use</h3>
+                    <p>Print the check and copy the information to your real check</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sidebar-card">
+              <h2 class="sidebar-title">💡 Tips</h2>
+              <div class="tips-list">
+                <div class="tip-item">
+                  <span class="tip-icon">✓</span>
+                  <span>Double-check all amounts before writing</span>
+                </div>
+                <div class="tip-item">
+                  <span class="tip-icon">✓</span>
+                  <span>Use a pen with permanent ink</span>
+                </div>
+                <div class="tip-item">
+                  <span class="tip-icon">✓</span>
+                  <span>Keep your checks in a secure location</span>
+                </div>
+                <div class="tip-item">
+                  <span class="tip-icon">✓</span>
+                  <span>Record checks in your register</span>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Check Editor Area -->
+          <div class="check-editor-area">
+            <div class="editor-intro">
+              <h2 class="editor-title">Interactive Check Editor</h2>
+              <p class="editor-description">Click on any field in the check below to edit it directly. The amount will be automatically converted to words.</p>
+            </div>
+            
+            <div class="check-container">
+              <check-preview editable="true"></check-preview>
+            </div>
+          </div>
         </div>
-      </div>
+      </main>
     `;
   }
 
@@ -63,6 +154,54 @@ class CheckForm extends HTMLElement {
           }
         }
       });
+    }
+
+    // Handle navigation buttons
+    const navButtons = this.querySelectorAll(".nav-btn");
+    navButtons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        const action = button.dataset.action;
+        this.handleNavAction(action);
+      });
+    });
+  }
+
+  handleNavAction(action) {
+    switch (action) {
+      case "print":
+        window.print();
+        break;
+      case "clear":
+        this.clearForm();
+        break;
+      case "help":
+        this.showHelp();
+        break;
+    }
+  }
+
+  clearForm() {
+    // Reset form data
+    const today = new Date();
+    const todayString = today.toISOString().split("T")[0];
+
+    this.formData = {
+      date: todayString,
+      payee: "",
+      amountNumber: "",
+      amountWords: "",
+      memo: "",
+    };
+
+    // Update preview
+    this.updatePreview();
+  }
+
+  showHelp() {
+    // Scroll to sidebar or show help modal
+    const sidebar = this.querySelector(".app-sidebar");
+    if (sidebar) {
+      sidebar.scrollIntoView({ behavior: "smooth" });
     }
   }
 

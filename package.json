@@ -19,5 +19,13 @@
     "defaults",
     "supports es6-module",
     "supports import-maps"
-  ]
+  ],
+  "scripts": {
+    "lint:css": "node tools/css-linter/css-tool.cjs --enhanced",
+    "lint:css-basic": "node tools/css-linter/css-tool.cjs --basic",
+    "fix:css": "node tools/css-linter/css-tool.cjs --fix",
+    "fix:css-preview": "node tools/css-linter/css-tool.cjs --fix --dry-run",
+    "serve": "python3 -m http.server 3000",
+    "dev": "npm run serve"
+  }
 }
