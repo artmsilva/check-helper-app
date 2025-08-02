@@ -37,15 +37,16 @@ The Handwritten Check Helper is a client-side web application designed to elimin
 git clone <repository-url>
 cd check-helper-app
 
-# Start development server (no installation needed!)
-npm run dev
-# or use Python directly:
-python3 -m http.server 3000
+# Start development server using Node.js
+node dev-server.js
+
+# Or use Python's built-in server
+python3 -m http.server 3000 --directory public
 
 # Open http://localhost:3000 in your browser
 ```
 
-**That's it!** No build tools, no compilation, no complex setup. The app runs directly in modern browsers using native ES modules.
+**That's it!** No build tools, no compilation, no complex setup. The app runs directly in modern browsers using native ES modules and import maps.
 
 ## 🌟 No Build Approach
 
@@ -86,9 +87,9 @@ This project intentionally avoids build tools like Webpack, Vite, or Parcel to d
 
 ### Prerequisites
 
-- **Node.js** 16+ (for development)
-- **Modern web browser** with ES2020+ support
-- **npm** or **yarn** package manager
+- **Modern web browser** with ES2020+ support and import maps
+- **Static file server** (Node.js, Python, or any web server)
+- **Optional**: Node.js 22+ for custom development server
 
 ### Development Setup
 
@@ -99,33 +100,40 @@ This project intentionally avoids build tools like Webpack, Vite, or Parcel to d
    cd check-helper-app
    ```
 
-2. **Install dependencies**
+2. **Start a development server** (choose one)
+
+   **Option A: Using Node.js (recommended)**
 
    ```bash
-   npm install
+   node dev-server.js
    ```
 
-3. **Start development server**
+   **Option B: Using Python**
 
    ```bash
-   npm run dev
+   python3 -m http.server 3000 --directory public
    ```
 
-4. **Open your browser**
-   Navigate to `http://localhost:5173`
+   **Option C: Using any static server**
 
-### Production Build
+   ```bash
+   # Serve the public/ directory on any web server
+   npx serve public
+   # or
+   npx http-server public
+   ```
 
-```bash
-# Build for production (minified)
-npm run build
+3. **Open your browser**
+   Navigate to `http://localhost:3000`
 
-# Build for production (readable code for learning)
-npm run build:readable
+### No Build Process
 
-# Preview production build
-npm run serve
-```
+This project intentionally has **no build step**:
+
+- ✅ **No npm install** - No dependencies to install
+- ✅ **No compilation** - Files are served directly to the browser
+- ✅ **No bundling** - Each file is loaded individually via ES modules
+- ✅ **Instant changes** - Refresh your browser to see updates
 
 ### 📚 **Code Transparency**
 
@@ -207,23 +215,28 @@ Output: "one thousand two hundred thirty-four and 56/100"
 ### Technology Stack
 
 - **Frontend**: Vanilla JavaScript with Web Components
-- **Build Tool**: Vite for development and bundling
+- **Module System**: Native ES modules with import maps
 - **Styling**: CSS with custom design system
 - **Architecture**: Component-based modular design
+- **Deployment**: Static files served directly (no build process)
 
 ### Project Structure
 
 ```
-src/
-├── main.js                    # Application entry point
-├── index.css                  # Global styles
-├── components/
-│   ├── check-form.js         # Main form component
-│   ├── check-preview.js      # Check visualization
-│   └── ui/                   # Reusable UI components
-├── utils/
-│   └── convertNumberToWords.js # Core business logic
-└── design-system/            # Design tokens and styles
+public/                       # All deployable files (serve this directory)
+├── index.html               # Application entry point with import maps
+├── src/
+│   ├── main.js             # Application entry point
+│   ├── index.css           # Global styles
+│   ├── components/
+│   │   ├── check-form.js   # Main form component
+│   │   ├── check-preview.js # Check visualization
+│   │   └── ui/             # Reusable UI components
+│   ├── utils/
+│   │   └── convertNumberToWords.js # Core business logic
+│   └── design-system/      # Design tokens and styles
+├── dev-server.js           # Development server (Node.js)
+└── docs/                   # Documentation (excluded from deployment)
 ```
 
 ### Component Architecture
@@ -237,13 +250,37 @@ Built with **Web Components** for:
 
 ## 💻 Development
 
-### Available Scripts
+### Development Workflow
+
+Since this project uses no build tools, development is straightforward:
+
+1. **Start a server** serving the `public/` directory
+2. **Edit files** directly in your code editor
+3. **Refresh browser** to see changes instantly
+4. **Use browser DevTools** to debug (source maps not needed!)
+
+### Available Development Commands
 
 ```bash
-npm run dev      # Start development server with hot reload
-npm run build    # Build for production
-npm run serve    # Preview production build locally
+# Start development server (serves public/ directory)
+node dev-server.js
+
+# Alternative: Use Python
+python3 -m http.server 3000 --directory public
+
+# Alternative: Use any static server
+npx serve public
+npx http-server public
 ```
+
+### No Build Scripts
+
+This project intentionally has **no npm scripts** because:
+
+- ✅ **No dependencies** to install or manage
+- ✅ **No build process** to configure or debug
+- ✅ **No version conflicts** between build tools
+- ✅ **Maximum compatibility** with any hosting platform
 
 ### Development Guidelines
 
@@ -326,12 +363,15 @@ Since this app uses no build tools, it works on any static hosting:
 ### Deployment Process
 
 ```bash
-# No build needed! Just upload your files:
+# No build needed! Just upload the public/ directory:
 your-domain.com/
-├── index.html              # Entry point
+├── index.html              # Entry point with import maps
 ├── src/                    # Source files (served directly)
-├── browser-check.html      # Compatibility checker
-└── vercel.json            # Vercel configuration
+│   ├── main.js            # Application entry point
+│   ├── components/        # Web Components
+│   ├── utils/             # Business logic
+│   └── design-system/     # Styles and design tokens
+└── vercel.json            # Server configuration (optional)
 ```
 
 ### Vercel Quick Setup
