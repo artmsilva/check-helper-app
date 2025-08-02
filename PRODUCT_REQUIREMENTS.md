@@ -187,18 +187,19 @@ src/
 - Amount field accepts decimal values
 - All fields update preview in real-time
 
-#### Story 2: Convert Amount to Words
+#### Story 2: Automatic Amount Conversion
 
 **As a** user  
-**I want to** automatically convert numeric amounts to written words  
-**So that** I don't have to manually calculate the written amount
+**I want to** have numeric amounts automatically converted to written words as I type  
+**So that** I don't have to manually calculate or trigger the written amount conversion
 
 **Acceptance Criteria**:
 
-- Conversion happens automatically as I type
+- Conversion happens automatically in real-time as I type in the amount field
 - Supports amounts up to $999,999,999,999.99
 - Formats cents as "XX/100"
 - Handles edge cases (zero, decimals, large numbers)
+- No manual button click required
 
 #### Story 3: Preview Check Layout
 

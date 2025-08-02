@@ -3,10 +3,176 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Handwritten Check Helper</title>
+
+    <!-- Primary Meta Tags -->
+    <title>
+      Interactive Check Helper - Write Checks Accurately & Effortlessly
+    </title>
+    <meta
+      name="title"
+      content="Interactive Check Helper - Write Checks Accurately & Effortlessly"
+    />
+    <meta
+      name="description"
+      content="Free interactive check writing tool with real-time amount-to-words conversion. Click and edit directly on a realistic check preview. No errors, no hassle - perfect for personal and business checks."
+    />
+    <meta
+      name="keywords"
+      content="check writer, check helper, amount to words, check writing tool, bank check, personal finance, business checks, money converter, check template, financial tools"
+    />
+    <meta name="author" content="Check Helper App" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://check-helper.app" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://check-helper.app/" />
+    <meta
+      property="og:title"
+      content="Interactive Check Helper - Write Checks Accurately & Effortlessly"
+    />
+    <meta
+      property="og:description"
+      content="Free interactive check writing tool with real-time amount-to-words conversion. Click and edit directly on a realistic check preview. No errors, no hassle."
+    />
+    <meta property="og:image" content="https://check-helper.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Check Helper" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://check-helper.app/" />
+    <meta
+      property="twitter:title"
+      content="Interactive Check Helper - Write Checks Accurately & Effortlessly"
+    />
+    <meta
+      property="twitter:description"
+      content="Free interactive check writing tool with real-time amount-to-words conversion. Click and edit directly on a realistic check preview."
+    />
+    <meta
+      property="twitter:image"
+      content="https://check-helper.app/twitter-image.png"
+    />
+    <meta property="twitter:creator" content="@checkhelper" />
+
+    <!-- Additional Meta Tags -->
+    <meta name="theme-color" content="#3b82f6" />
+    <meta name="msapplication-TileColor" content="#3b82f6" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Check Helper" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Import Maps for Native ES Modules -->
+    <script type="importmap">
+      {
+        "imports": {
+          "check-helper/": "./src/",
+          "utils/": "./src/utils/",
+          "components/": "./src/components/",
+          "ui/": "./src/components/ui/",
+          "design-system/": "./src/design-system/"
+        }
+      }
+    </script>
+
+    <!-- CSS Imports -->
+    <link rel="stylesheet" href="./src/design-system/tokens.css" />
+    <link rel="stylesheet" href="./src/design-system/layout.css" />
+    <link rel="stylesheet" href="./src/design-system/typography.css" />
+    <link rel="stylesheet" href="./src/design-system/components.css" />
+    <link rel="stylesheet" href="./src/index.css" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Interactive Check Helper",
+        "description": "Free interactive check writing tool with real-time amount-to-words conversion. Click and edit directly on a realistic check preview.",
+        "url": "https://check-helper.app",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "Check Helper"
+        },
+        "featureList": [
+          "Interactive check editing",
+          "Real-time amount-to-words conversion",
+          "Realistic check preview",
+          "No installation required",
+          "Works offline",
+          "Mobile responsive",
+          "Dark mode support"
+        ],
+        "screenshot": "https://check-helper.app/screenshot.png"
+      }
+    </script>
+
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="./src/main.js" as="script" />
+    <link rel="preload" href="./src/index.css" as="style" />
+
+    <!-- DNS Prefetch for External Resources -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+
+    <!-- Performance Monitoring -->
+    <script>
+      // Core Web Vitals tracking
+      function sendToAnalytics(metric) {
+        // Replace with your analytics endpoint
+        console.log("Performance metric:", metric);
+      }
+
+      // Track page load performance
+      window.addEventListener("load", () => {
+        // Measure page load time
+        const loadTime =
+          performance.timing.loadEventEnd - performance.timing.navigationStart;
+        sendToAnalytics({
+          name: "page_load_time",
+          value: loadTime,
+          url: window.location.pathname,
+        });
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.js"></script>
+
+    <!-- Native ES Module Loading -->
+    <script type="module" src="./src/main.js"></script>
+
+    <!-- Service Worker Registration for PWA -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("./public/sw.js")
+            .then((registration) => {
+              console.log("SW registered: ", registration);
+            })
+            .catch((registrationError) => {
+              console.log("SW registration failed: ", registrationError);
+            });
+        });
+      }
+    </script>
   </body>
 </html>

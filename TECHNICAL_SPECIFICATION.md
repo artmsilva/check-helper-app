@@ -353,13 +353,13 @@ User Input → FormInput Component → Custom Event → CheckForm → State Upda
 ### Amount Conversion Flow
 
 ```
-Numeric Input → convertAmountToWords() → Words Output → FormInput Update → Preview Update
+Numeric Input (real-time) → convertAmountToWords() → Words Output → Form State Update → Preview Update
 ```
 
 ### Print Flow
 
 ```
-Print Button → CheckForm.printCheck() → Generate Print CSS → window.print() → Browser Print Dialog
+Print Button → CheckForm.handlePrint() → window.print() → Browser Print Dialog
 ```
 
 ### Component Lifecycle

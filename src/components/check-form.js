@@ -1,4 +1,4 @@
-import { convertAmountToWords } from "../utils/convertNumberToWords.js";
+import { convertAmountToWords } from "utils/convertNumberToWords.js";
 
 /**
  * CheckForm - Main form component for entering check details
@@ -6,8 +6,12 @@ import { convertAmountToWords } from "../utils/convertNumberToWords.js";
 class CheckForm extends HTMLElement {
   constructor() {
     super();
+    // Get today's date in YYYY-MM-DD format for date input
+    const today = new Date();
+    const todayString = today.toISOString().split("T")[0];
+
     this.formData = {
-      date: "",
+      date: todayString,
       payee: "",
       amountNumber: "",
       amountWords: "",
@@ -20,150 +24,62 @@ class CheckForm extends HTMLElement {
     // Use setTimeout to ensure all child components are fully initialized
     setTimeout(() => {
       this.attachEventListeners();
+      // Pass initial data to the interactive preview
+      this.updatePreview();
     }, 0);
   }
 
   render() {
     this.innerHTML = `
-      <div class="form-container">
-        <div class="form-grid">
-          <div class="form-field">
-            <form-label for="date">Date (MM/DD/YYYY)</form-label>
-            <form-input
-              id="date"
-              type="date"
-              value="${this.formData.date}"
-            ></form-input>
-          </div>
-          
-          <div class="form-field">
-            <form-label for="payee">Payee name</form-label>
-            <form-input
-              id="payee"
-              type="text"
-              placeholder="Enter payee name"
-              value="${this.formData.payee}"
-            ></form-input>
-          </div>
-          
-          <div class="form-field">
-            <form-label for="amount-number">Amount (numeric)</form-label>
-            <form-input
-              id="amount-number"
-              type="number"
-              step="0.01"
-              min="0"
-              placeholder="0.00"
-              value="${this.formData.amountNumber}"
-            ></form-input>
-          </div>
-          
-          <div class="form-field">
-            <form-label for="amount-words">Amount in words</form-label>
-            <form-input
-              id="amount-words"
-              type="text"
-              placeholder="Amount in words"
-              value="${this.formData.amountWords}"
-            ></form-input>
-          </div>
-          
-          <div class="form-field full-width">
-            <form-label for="memo">Memo (optional)</form-label>
-            <form-input
-              id="memo"
-              type="text"
-              placeholder="Memo"
-              value="${this.formData.memo}"
-            ></form-input>
-          </div>
+      <div class="check-editor-container">
+        <div class="editor-header">
+          <h1>✨ Interactive Check Editor</h1>
+          <p>Click on any field in the check below to edit it directly</p>
         </div>
         
-        <div class="form-actions">
-          <form-button id="convert-btn" variant="primary">Convert Amount to Words</form-button>
-          <form-button id="print-btn" variant="outline">Print</form-button>
+        <!-- Full-width Interactive Check -->
+        <div class="interactive-check-container">
+          <check-preview editable="true"></check-preview>
         </div>
-        
-        <check-preview></check-preview>
       </div>
     `;
   }
 
   attachEventListeners() {
-    // Input change handlers
-    const inputs = this.querySelectorAll("form-input");
-    console.log(`Found ${inputs.length} form-input elements`);
+    // Listen for data changes from the interactive check preview
+    const preview = this.querySelector("check-preview");
+    if (preview) {
+      preview.addEventListener("dataChanged", (e) => {
+        console.log("Data changed from preview:", e.detail);
+        this.formData = { ...this.formData, ...e.detail };
 
-    inputs.forEach((input, index) => {
-      console.log(`Setting up listener for input ${index}:`, input.id);
-      input.addEventListener("input", (e) => {
-        console.log("Input event received:", e.target.id, e.detail);
-        const field = this.getFieldNameFromId(e.target.id);
-        if (field && e.detail && e.detail.value !== undefined) {
-          this.formData[field] = e.detail.value;
-          this.updatePreview();
-        } else {
-          console.warn("Invalid event or missing field mapping:", {
-            field,
-            detail: e.detail,
-          });
+        // Auto-convert amount if it was changed
+        if (e.detail.amountNumber !== undefined) {
+          this.autoConvertAmount(e.detail.amountNumber);
+          // Update only the amount words without re-rendering the whole component
+          const wordsElement = preview.querySelector(".amount-words-value");
+          if (wordsElement) {
+            wordsElement.textContent = this.formData.amountWords;
+          }
         }
       });
-    });
-
-    // Convert button
-    const convertBtn = this.querySelector("#convert-btn");
-    convertBtn.addEventListener("click", () => {
-      this.handleConvert();
-    });
-
-    // Print button
-    const printBtn = this.querySelector("#print-btn");
-    printBtn.addEventListener("click", () => {
-      this.handlePrint();
-    });
-  }
-
-  getFieldNameFromId(id) {
-    const fieldMap = {
-      date: "date",
-      payee: "payee",
-      "amount-number": "amountNumber",
-      "amount-words": "amountWords",
-      memo: "memo",
-    };
-    return fieldMap[id];
-  }
-
-  handleConvert() {
-    const convertedWords = convertAmountToWords(this.formData.amountNumber);
-    this.formData.amountWords = convertedWords;
-
-    // Update the input value using the component's setter
-    const amountWordsInput = this.querySelector("#amount-words");
-    if (amountWordsInput) {
-      amountWordsInput.value = convertedWords;
-
-      // Also trigger an input event to ensure the form data is synchronized
-      amountWordsInput.dispatchEvent(
-        new CustomEvent("input", {
-          detail: { value: convertedWords },
-          bubbles: true,
-        })
-      );
     }
-
-    this.updatePreview();
   }
 
-  handlePrint() {
-    window.print();
+  autoConvertAmount(value) {
+    if (value && !isNaN(parseFloat(value))) {
+      const convertedWords = convertAmountToWords(value);
+      this.formData.amountWords = convertedWords;
+    } else if (value === "" || value == null) {
+      // Clear the words field if amount is empty
+      this.formData.amountWords = "";
+    }
   }
 
   updatePreview() {
     const preview = this.querySelector("check-preview");
     if (preview) {
-      preview.setAttribute("data", JSON.stringify(this.formData));
+      preview.updateData(this.formData);
     }
   }
 }
