@@ -37,9 +37,6 @@ The Handwritten Check Helper is a client-side web application designed to elimin
 git clone <repository-url>
 cd check-helper-app
 
-# Start development server using Node.js
-node dev-server.js
-
 # Or use Python's built-in server
 python3 -m http.server 3000 --directory public
 
@@ -101,12 +98,6 @@ This project intentionally avoids build tools like Webpack, Vite, or Parcel to d
    ```
 
 2. **Start a development server** (choose one)
-
-   **Option A: Using Node.js (recommended)**
-
-   ```bash
-   node dev-server.js
-   ```
 
    **Option B: Using Python**
 
@@ -235,7 +226,6 @@ public/                       # All deployable files (serve this directory)
 │   ├── utils/
 │   │   └── convertNumberToWords.js # Core business logic
 │   └── design-system/      # Design tokens and styles
-├── dev-server.js           # Development server (Node.js)
 └── docs/                   # Documentation (excluded from deployment)
 ```
 
@@ -262,8 +252,6 @@ Since this project uses no build tools, development is straightforward:
 ### Available Development Commands
 
 ```bash
-# Start development server (serves public/ directory)
-node dev-server.js
 
 # Alternative: Use Python
 python3 -m http.server 3000 --directory public
