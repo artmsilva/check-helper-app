@@ -2,7 +2,7 @@
 
 ## Overview
 
-This design system provides a comprehensive set of design tokens, components, and utilities for building consistent and scalable user interfaces using vanilla web components.
+This design system provides design tokens and utilities for building consistent and scalable user interfaces for the Interactive Check Helper application. The system focuses on the core interactive check preview functionality.
 
 ## Architecture
 
@@ -10,9 +10,24 @@ This design system provides a comprehensive set of design tokens, components, an
 src/design-system/
 ├── tokens.css       # Design tokens (colors, spacing, typography, etc.)
 ├── typography.css   # Text and heading utilities
-├── components.css   # Form and UI component styles
-└── layout.css       # Layout utilities and patterns
+└── layout.css       # Layout utilities and interactive check styles
 ```
+
+## Core Components
+
+The application features two main components:
+
+### CheckForm Component
+
+- Main container for check data entry
+- Coordinates with the preview component
+- Handles data validation and user interactions
+
+### CheckPreview Component
+
+- Interactive check visualization with editable fields
+- Real-time amount-to-words conversion
+- Realistic check layout and styling
 
 ## Design Tokens
 
@@ -60,161 +75,47 @@ All colors follow a consistent scale pattern and support dark mode.
 --space-8: 2rem; /* 32px */
 ```
 
-## Components
+## Interactive Check Styling
 
-### Form Components
+The design system includes comprehensive styling for the interactive check preview:
 
-#### FormInput
+### Editable Fields
 
-```html
-<form-input
-  type="text"
-  id="username"
-  placeholder="Enter username"
-  value="john@example.com"
->
-</form-input>
+```css
+.editable-field {
+  /* Interactive field styling with hover/focus states */
+  cursor: text;
+  transition: background-color 0.2s ease;
+}
+
+.editable-field:hover {
+  background-color: var(--color-gray-50);
+}
+
+.editable-field:focus {
+  outline: 2px solid var(--color-primary-500);
+  background-color: var(--color-white);
+}
 ```
 
-**Attributes:**
+### Check Layout
 
-- `type`: Input type (text, email, number, etc.)
-- `id`: Element ID
-- `placeholder`: Placeholder text
-- `value`: Initial value
-- `step`: For number inputs
-- `min`: Minimum value
-
-#### FormLabel
-
-```html
-<form-label for="username">Username</form-label>
+```css
+.interactive-check {
+  /* Realistic check proportions and styling */
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-300);
+  padding: var(--space-6);
+  font-family: "Courier New", monospace;
+}
 ```
 
-**Attributes:**
+### Component Classes
 
-- `for`: Associated input ID
-
-#### FormButton
-
-```html
-<form-button variant="primary" size="lg">Submit</form-button>
-```
-
-**Variants:**
-
-- `primary`: Main action button (blue background)
-- `secondary`: Secondary action (gray background)
-- `outline`: Border-only button
-- `ghost`: Transparent background
-
-**Sizes:**
-
-- `sm`: Small button
-- `base`: Default size
-- `lg`: Large button
-
-### Layout Components
-
-#### Stack
-
-Vertical layout with consistent spacing.
-
-```html
-<ui-stack spacing="md">
-  <div>Item 1</div>
-  <div>Item 2</div>
-  <div>Item 3</div>
-</ui-stack>
-```
-
-**Spacing options:** `sm`, `md`, `lg`, `xl`
-
-#### Inline
-
-Horizontal layout with flexible alignment.
-
-```html
-<ui-inline spacing="md" align="center" justify="between">
-  <div>Left content</div>
-  <div>Right content</div>
-</ui-inline>
-```
-
-**Attributes:**
-
-- `spacing`: Gap between items (`sm`, `md`, `lg`)
-- `align`: Vertical alignment (`start`, `center`, `end`, `stretch`)
-- `justify`: Horizontal distribution (`start`, `end`, `center`, `between`, `around`)
-
-#### Grid
-
-Responsive grid layout.
-
-```html
-<ui-grid columns="2" breakpoint="md" spacing="lg">
-  <div>Grid item 1</div>
-  <div>Grid item 2</div>
-  <div>Grid item 3</div>
-  <div>Grid item 4</div>
-</ui-grid>
-```
-
-**Attributes:**
-
-- `columns`: Number of columns
-- `breakpoint`: Responsive breakpoint (`sm`, `md`, `lg`)
-- `spacing`: Gap between items
-
-#### Card
-
-Container with consistent styling.
-
-```html
-<ui-card variant="elevated" padding="6">
-  <ui-heading level="3">Card Title</ui-heading>
-  <ui-text>Card content goes here.</ui-text>
-</ui-card>
-```
-
-**Variants:**
-
-- `default`: Standard card
-- `elevated`: Enhanced shadow
-- `interactive`: Hover effects
-
-### Typography Components
-
-#### Heading
-
-Semantic headings with consistent styling.
-
-```html
-<ui-heading level="1" align="center">Main Title</ui-heading>
-<ui-heading level="2">Section Title</ui-heading>
-```
-
-**Attributes:**
-
-- `level`: Heading level (1-6)
-- `align`: Text alignment (`left`, `center`, `right`)
-
-#### Text
-
-Flexible text component.
-
-```html
-<ui-text size="lg" weight="semibold" color="primary">
-  Important text content
-</ui-text>
-```
-
-**Attributes:**
-
-- `size`: Text size (`xs`, `sm`, `base`, `lg`, `xl`, `2xl`)
-- `weight`: Font weight (`normal`, `medium`, `semibold`, `bold`)
-- `color`: Text color (`primary`, `secondary`, `muted`, `accent`, `success`, `warning`, `danger`)
-- `align`: Text alignment
+- `.check-date-section` - Date field positioning
+- `.check-payee-section` - Payee and amount row
+- `.check-amount-words-section` - Written amount line
+- `.check-footer-section` - Memo and signature area
 
 ## Utility Classes
 
@@ -222,6 +123,8 @@ Flexible text component.
 
 ```css
 .m-4    /* margin: 1rem */
+/* margin: 1rem */
+/* margin: 1rem */
 /* margin: 1rem */
 .mt-2   /* margin-top: 0.5rem */
 .p-6    /* padding: 1.5rem */
@@ -233,6 +136,8 @@ Flexible text component.
 ```css
 .flex              /* display: flex */
 /* display: flex */
+/* display: flex */
+/* display: flex */
 .flex--column      /* flex-direction: column */
 .flex--justify-between /* justify-content: space-between */
 .flex--align-center; /* align-items: center */
@@ -243,6 +148,8 @@ Flexible text component.
 ```css
 .text--lg          /* Large text */
 /* Large text */
+/* Large text */
+/* Large text */
 .text--bold        /* Bold font weight */
 .text--center      /* Center alignment */
 .text--primary; /* Primary text color */
@@ -250,60 +157,30 @@ Flexible text component.
 
 ## Usage Examples
 
-### Form Layout
+### Basic Application Layout
 
 ```html
-<ui-stack spacing="lg">
-  <ui-heading level="2">Contact Form</ui-heading>
-
-  <ui-grid columns="2" breakpoint="md">
-    <div class="form-field">
-      <form-label for="first-name">First Name</form-label>
-      <form-input id="first-name" placeholder="John"></form-input>
-    </div>
-
-    <div class="form-field">
-      <form-label for="last-name">Last Name</form-label>
-      <form-input id="last-name" placeholder="Doe"></form-input>
-    </div>
-  </ui-grid>
-
-  <div class="form-field">
-    <form-label for="email">Email</form-label>
-    <form-input
-      type="email"
-      id="email"
-      placeholder="john@example.com"
-    ></form-input>
-  </div>
-
-  <ui-inline justify="end" spacing="md">
-    <form-button variant="ghost">Cancel</form-button>
-    <form-button variant="primary">Submit</form-button>
-  </ui-inline>
-</ui-stack>
+<div class="app-container">
+  <h1 class="app-title">Handwritten Check Helper</h1>
+  <check-form></check-form>
+</div>
 ```
 
-### Card Grid
+### Interactive Check Preview
 
 ```html
-<ui-grid columns="3" breakpoint="md" spacing="lg">
-  <ui-card variant="interactive">
-    <ui-heading level="4">Feature 1</ui-heading>
-    <ui-text color="secondary">Description of the first feature.</ui-text>
-  </ui-card>
-
-  <ui-card variant="interactive">
-    <ui-heading level="4">Feature 2</ui-heading>
-    <ui-text color="secondary">Description of the second feature.</ui-text>
-  </ui-card>
-
-  <ui-card variant="interactive">
-    <ui-heading level="4">Feature 3</ui-heading>
-    <ui-text color="secondary">Description of the third feature.</ui-text>
-  </ui-card>
-</ui-grid>
+<check-preview
+  editable="true"
+  data='{"date":"2025-08-01","payee":"John Doe","amountNumber":"150.00"}'
+></check-preview>
 ```
+
+The check preview component automatically handles:
+
+- Real-time editing of fields
+- Amount-to-words conversion
+- Visual feedback for editable areas
+- Realistic check formatting
 
 ## Customization
 
@@ -334,11 +211,12 @@ The design system includes automatic dark mode support:
 
 ## Best Practices
 
-1. **Use semantic components** - Prefer `<ui-heading>` over plain `<h1>` tags
+1. **Use semantic HTML** - The application uses standard HTML elements with CSS classes
 2. **Leverage design tokens** - Use CSS custom properties for consistency
-3. **Compose layouts** - Combine layout components for complex designs
+3. **Focus on interactive elements** - Emphasize the editable check fields
 4. **Maintain spacing consistency** - Use the spacing scale for all margins/padding
-5. **Test responsiveness** - Verify layouts work across all breakpoints
+5. **Test responsiveness** - Verify the check layout works across all screen sizes
+6. **Preserve check realism** - Maintain authentic check appearance and proportions
 
 ## Browser Support
 

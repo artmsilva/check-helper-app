@@ -1,6 +1,20 @@
-# Handwritten Check Helper
+# Handwritten Check Hel## 🏗 Structure
 
-> A simple web app that helps you write checks accurately. Built with vanilla JavaScript and native ES modules - no build tools required!
+````
+public/                    # Serve this directory
+├── index.html            # Entry point with import maps
+└── src/
+    ├── main.js          # App entry
+    ├── components/      # Web Components
+    │   ├── check-form.js   # Main form component
+    │   └── check-preview.js # Interactive check preview
+    ├── utils/           # Business logic
+    │   └── convertNumberToWords.js # Amount conversion
+    └── design-system/   # Styles
+        ├── tokens.css      # Design tokens
+        ├── typography.css  # Typography utilities
+        └── layout.css      # Layout and component styles
+```mple web app that helps you write checks accurately. Built with vanilla JavaScript and native ES modules - no build tools required!
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/artmsilva/check-helper-app)
 
@@ -19,7 +33,7 @@ git clone <repository-url>
 cd check-helper-app
 python3 -m http.server 3000 --directory public
 # Open http://localhost:3000
-```
+````
 
 ## � Structure
 
@@ -77,7 +91,8 @@ Example: `$1,234.56` → `"one thousand two hundred thirty-four and 56/100"`
 
 - **Frontend**: Vanilla JavaScript with Web Components
 - **Modules**: Native ES modules with import maps
-- **Styling**: CSS custom properties
+- **Styling**: CSS custom properties and design tokens
+- **Components**: Interactive check preview with real-time editing
 - **No frameworks**: Pure web standards
 
 ## 📚 Documentation
@@ -87,6 +102,9 @@ Full documentation available in [`docs/`](docs/):
 - [Complete Guide](docs/README.md)
 - [Design System](docs/DESIGN_SYSTEM.md)
 - [Technical Specs](docs/TECHNICAL_SPECIFICATION.md)
+- [Recent Cleanup Notes](docs/CLEANUP_NOTES.md)
+
+> **Recent Update (v1.1)**: Streamlined codebase by removing unused UI components while maintaining full functionality. See [cleanup notes](docs/CLEANUP_NOTES.md) for details.
 
 ## 🌟 Browser Support
 

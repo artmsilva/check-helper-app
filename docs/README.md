@@ -16,10 +16,6 @@ Welcome to the comprehensive documentation for the Interactive Check Helper appl
 - [TECHNICAL_SPECIFICATION.md](TECHNICAL_SPECIFICATION.md) - Technical architecture and implementation details
 - [PRODUCT_REQUIREMENTS.md](PRODUCT_REQUIREMENTS.md) - Product requirements and feature specifications
 
-### 🛠️ **Development**
-
-- [STORYBOOK_README.md](STORYBOOK_README.md) - Component development and testing guide
-
 ## 🌟 **Project Highlights**
 
 This project showcases:
@@ -40,8 +36,14 @@ check-helper-app/
 │   └── src/                  # Source code
 │       ├── main.js           # Application initialization
 │       ├── components/       # Web Components
+│       │   ├── check-form.js    # Main form component
+│       │   └── check-preview.js # Interactive check preview
 │       ├── utils/            # Utility functions
+│       │   └── convertNumberToWords.js # Amount conversion
 │       └── design-system/    # CSS design tokens
+│           ├── tokens.css       # Design tokens
+│           ├── typography.css   # Typography utilities
+│           └── layout.css       # Layout and component styles
 ├── docs/                     # 📚 All documentation
 ├── package.json              # Project metadata (no build dependencies!)
 └── vercel.json              # Deployment configuration
@@ -83,7 +85,6 @@ npx http-server public
     "check-helper/": "./src/",
     "utils/": "./src/utils/",
     "components/": "./src/components/",
-    "ui/": "./src/components/ui/",
     "design-system/": "./src/design-system/"
   }
 }

@@ -20,10 +20,6 @@
 // Import web components using import map paths
 import "components/check-form.js";
 import "components/check-preview.js";
-import "ui/form-input.js";
-import "ui/form-label.js";
-import "ui/form-button.js";
-import "ui/layout-components.js";
 
 // Initialize the app
 document.addEventListener("DOMContentLoaded", () => {
@@ -35,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   root.innerHTML = `
     <div class="app-container">
-      <ui-heading level="1" class="app-title">Handwritten Check Helper</ui-heading>
+      <h1 class="app-title">Handwritten Check Helper</h1>
       <check-form></check-form>
     </div>
   `;

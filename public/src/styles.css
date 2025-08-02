@@ -1,0 +1,642 @@
+/**
+ * Unified Stylesheet with CSS Layers
+ * Modern approach using @layer for style organization and cascade control
+ */
+
+/* Define layer order - earlier layers have lower priority */
+@layer reset, tokens, base, layout, components, utilities;
+
+/* ===== RESET LAYER ===== */
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+    border: none;
+    background: none;
+  }
+
+  /* Screen reader only utility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+/* ===== TOKENS LAYER ===== */
+@layer tokens {
+  :root {
+    /* Color Palette */
+    --color-primary-50: #eff6ff;
+    --color-primary-100: #dbeafe;
+    --color-primary-200: #bfdbfe;
+    --color-primary-300: #93c5fd;
+    --color-primary-400: #60a5fa;
+    --color-primary-500: #3b82f6;
+    --color-primary-600: #2563eb;
+    --color-primary-700: #1d4ed8;
+    --color-primary-800: #1e40af;
+    --color-primary-900: #1e3a8a;
+
+    --color-gray-50: #f9fafb;
+    --color-gray-100: #f3f4f6;
+    --color-gray-200: #e5e7eb;
+    --color-gray-300: #d1d5db;
+    --color-gray-400: #9ca3af;
+    --color-gray-500: #6b7280;
+    --color-gray-600: #4b5563;
+    --color-gray-700: #374151;
+    --color-gray-800: #1f2937;
+    --color-gray-900: #111827;
+
+    --color-white: #ffffff;
+    --color-black: #000000;
+
+    /* Semantic Colors */
+    --color-background: var(--color-gray-100);
+    --color-surface: var(--color-white);
+    --color-border: var(--color-gray-300);
+    --color-border-focus: var(--color-primary-500);
+    --color-text-primary: var(--color-gray-900);
+    --color-text-secondary: var(--color-gray-600);
+    --color-text-muted: var(--color-gray-500);
+    --color-text-on-primary: var(--color-white);
+
+    /* Typography */
+    --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+      "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+      "Helvetica Neue", sans-serif;
+    --font-family-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco,
+      "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 1.875rem;
+
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    --line-height-tight: 1.25;
+    --line-height-snug: 1.375;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.625;
+
+    /* Spacing Scale */
+    --space-0: 0;
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+
+    /* Sizing */
+    --size-xs: 1.25rem;
+    --size-sm: 1.5rem;
+    --size-base: 2rem;
+    --size-md: 2.25rem;
+    --size-lg: 2.5rem;
+    --size-xl: 3rem;
+
+    /* Border Radius */
+    --radius-none: 0;
+    --radius-sm: 0.125rem;
+    --radius-base: 0.25rem;
+    --radius-md: 0.375rem;
+    --radius-lg: 0.5rem;
+    --radius-xl: 0.75rem;
+    --radius-2xl: 1rem;
+    --radius-full: 9999px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+      0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-focus: 0 0 0 3px var(--color-primary-200);
+
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-base: 250ms ease;
+    --transition-slow: 500ms ease;
+
+    /* Z-index */
+    --z-base: 0;
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal: 1040;
+    --z-popover: 1050;
+    --z-tooltip: 1060;
+
+    /* Layout */
+    --container-max-width: 64rem;
+    --content-max-width: 32rem;
+
+    /* Breakpoints (for reference) */
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+  }
+
+  /* Dark Mode Support */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-background: var(--color-gray-900);
+      --color-surface: var(--color-gray-800);
+      --color-border: var(--color-gray-600);
+      --color-text-primary: var(--color-gray-100);
+      --color-text-secondary: var(--color-gray-300);
+      --color-text-muted: var(--color-gray-400);
+    }
+  }
+}
+
+/* ===== BASE LAYER ===== */
+@layer base {
+  body {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-normal);
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+    min-height: 100vh;
+    padding: var(--space-4);
+  }
+
+  /* Focus styles */
+  :focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(var(--space-5));
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fadeInUp {
+    animation: fadeInUp 0.4s ease-out;
+  }
+}
+
+/* ===== LAYOUT LAYER ===== */
+@layer layout {
+  /* Application Layout */
+  .app-container {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .app-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  /* Check Editor Layout */
+  .check-editor-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-4);
+  }
+
+  .editor-header {
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+
+  .editor-header h1 {
+    margin: 0 0 var(--space-2) 0;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .editor-header p {
+    margin: 0 0 var(--space-4) 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-lg);
+  }
+
+  .interactive-check-container {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-6);
+    background: var(--color-gray-50);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Dark mode container adjustments */
+  @media (prefers-color-scheme: dark) {
+    .interactive-check-container {
+      background: linear-gradient(
+        135deg,
+        var(--color-gray-800) 0%,
+        var(--color-gray-900) 100%
+      );
+      border: 1px solid var(--color-gray-600);
+    }
+  }
+}
+
+/* ===== COMPONENTS LAYER ===== */
+@layer components {
+  /* Interactive Check Component */
+  .interactive-check {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 2px solid #1f2937;
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    width: 100%;
+    max-width: 800px;
+    font-family: var(--font-family-mono);
+    position: relative;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    color: #000000; /* Always black text on checks for readability */
+  }
+
+  .interactive-check.editable {
+    cursor: text;
+  }
+
+  /* Dark mode check adjustments */
+  @media (prefers-color-scheme: dark) {
+    .interactive-check {
+      background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+      border: 2px solid #475569;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  /* Check Header */
+  .check-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-gray-300);
+  }
+
+  .check-number {
+    font-weight: bold;
+    font-size: var(--font-size-lg);
+    color: #000000;
+  }
+
+  .bank-info {
+    text-align: right;
+    font-size: var(--font-size-sm);
+    color: #000000;
+  }
+
+  .bank-name {
+    font-weight: bold;
+    margin-bottom: var(--space-1);
+  }
+
+  .bank-address {
+    color: #000000;
+  }
+
+  /* Dark mode header adjustments */
+  @media (prefers-color-scheme: dark) {
+    .check-header {
+      border-bottom: 1px solid #6b7280;
+    }
+  }
+
+  /* Check Date Section */
+  .check-date-section {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+  }
+
+  .date-label {
+    font-weight: bold;
+    color: #000000;
+  }
+
+  /* Check Payee Section */
+  .check-payee-section {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid #000000;
+  }
+
+  .payee-label {
+    font-weight: bold;
+    white-space: nowrap;
+    color: #000000;
+  }
+
+  .dollar-sign {
+    font-weight: bold;
+    font-size: var(--font-size-lg);
+    margin-left: auto;
+    color: #000000;
+  }
+
+  /* Check Amount Words Section */
+  .check-amount-words-section {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid #000000;
+  }
+
+  .amount-words-value {
+    flex: 1;
+    min-height: var(--space-6);
+    color: #374151;
+    font-style: italic;
+  }
+
+  .dollars-label {
+    font-weight: bold;
+    white-space: nowrap;
+    color: #000000;
+  }
+
+  /* Check Account Info */
+  .check-account-info {
+    margin-bottom: var(--space-6);
+  }
+
+  .routing-account {
+    display: flex;
+    gap: var(--space-4);
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    color: #374151;
+  }
+
+  .routing,
+  .account,
+  .check-num {
+    color: #374151;
+  }
+
+  /* Check Footer Section */
+  .check-footer-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .memo-section {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .memo-label {
+    font-weight: bold;
+    white-space: nowrap;
+    color: #000000;
+  }
+
+  .signature-section {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .signature-label {
+    font-weight: bold;
+    white-space: nowrap;
+    color: #000000;
+  }
+
+  .signature-line {
+    width: 200px;
+    height: 1px;
+    background: #000000;
+    display: block;
+  }
+
+  /* Editable Field Styles */
+  .editable-field {
+    min-width: 80px;
+    min-height: 1.5em;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+    outline: none;
+    position: relative;
+    display: inline-block;
+    color: #000000;
+    background: transparent;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .editable-field.empty {
+    color: #6b7280;
+    font-style: italic;
+  }
+
+  /* Field-specific widths to prevent layout shift */
+  .editable-field[data-field="date"] {
+    min-width: 100px;
+  }
+
+  .editable-field[data-field="payee"] {
+    min-width: 200px;
+    flex: 1;
+    max-width: 300px;
+  }
+
+  .editable-field[data-field="amountNumber"] {
+    min-width: 80px;
+    text-align: right;
+  }
+
+  .editable-field[data-field="memo"] {
+    min-width: 150px;
+    flex: 1;
+    max-width: 250px;
+  }
+
+  /* Interactive states */
+  .interactive-check.editable .editable-field:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.3);
+    cursor: text;
+  }
+
+  .interactive-check.editable .editable-field:focus {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    color: #000000;
+    font-style: normal;
+  }
+
+  /* Dark mode interactive states */
+  @media (prefers-color-scheme: dark) {
+    .interactive-check.editable .editable-field:hover {
+      background: rgba(59, 130, 246, 0.12);
+      border-color: rgba(59, 130, 246, 0.4);
+    }
+
+    .interactive-check.editable .editable-field:focus {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+  }
+
+  /* Date Input Overlay */
+  .date-input-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+}
+
+/* ===== UTILITIES LAYER ===== */
+@layer utilities {
+  /* Print Styles */
+  @media print {
+    body {
+      background: var(--color-white);
+      padding: 0;
+    }
+
+    .app-title,
+    .editor-header {
+      display: none;
+    }
+
+    .interactive-check {
+      box-shadow: none;
+      border: 1px solid var(--color-black);
+      max-width: none;
+      margin: 0;
+    }
+
+    .interactive-check-container {
+      background: transparent;
+      box-shadow: none;
+      padding: 0;
+    }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .check-editor-container {
+      padding: var(--space-2);
+    }
+
+    .interactive-check {
+      padding: var(--space-4);
+      font-size: var(--font-size-sm);
+    }
+
+    .check-payee-section {
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    .check-footer-section {
+      flex-direction: column;
+      gap: var(--space-4);
+      align-items: stretch;
+    }
+
+    .app-container {
+      gap: var(--space-4);
+    }
+  }
+
+  /* Focus utilities */
+  .focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+  }
+}

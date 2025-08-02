@@ -31,10 +31,6 @@ The Handwritten Check Helper is a client-side single-page application built with
 │  ┌─────────────┬─────────────────┐  │
 │  │ check-form  │  check-preview  │  │
 │  └─────────────┴─────────────────┘  │
-│  ┌─────────────────────────────────┐ │
-│  │        UI Components            │ │
-│  │ form-input, form-label, etc.    │ │
-│  └─────────────────────────────────┘ │
 ├─────────────────────────────────────┤
 │        Business Logic Layer        │
 │  ┌─────────────────────────────────┐ │
@@ -127,19 +123,13 @@ public/src/
 ├── index.css                  # Global styles
 ├── components/
 │   ├── check-form.js         # Main form container
-│   ├── check-preview.js      # Check visualization
-│   └── ui/                   # Reusable UI components
-│       ├── form-input.js     # Input field component
-│       ├── form-label.js     # Label component
-│       ├── form-button.js    # Button component
-│       └── layout-components.js # Layout utilities
+│   └── check-preview.js      # Interactive check visualization
 ├── utils/
 │   └── convertNumberToWords.js # Business logic
 └── design-system/
     ├── tokens.css            # Design tokens
     ├── typography.css        # Typography utilities
-    ├── components.css        # Component styles
-    └── layout.css           # Layout utilities
+    └── layout.css           # Layout and component styles
 ```
 
 ## Component Specifications
@@ -202,57 +192,38 @@ Receives data through the `data` attribute as JSON string:
 
 #### Rendering Logic
 
-- Updates automatically when `data` attribute changes
-- Handles empty/missing data gracefully
-- Maintains check layout proportions
-- Uses non-breaking spaces for empty fields
+- Interactive inline editing of check fields
+- Real-time updates when data changes
+- Handles empty/missing data gracefully with placeholders
+- Maintains realistic check layout proportions
+- Uses contenteditable for direct field editing
+- Auto-converts numeric amounts to words
 
 #### CSS Classes
 
-- `.check-preview`: Main container
-- `.check-date`: Date positioning
-- `.check-payee-amount`: Payee and amount row
-- `.check-amount-words`: Written amount line
-- `.check-footer`: Memo and signature area
+- `.interactive-check`: Main container
+- `.editable-field`: Clickable/editable fields
+- `.check-date-section`: Date positioning
+- `.check-payee-section`: Payee and amount row
+- `.check-amount-words-section`: Written amount line
+- `.check-footer-section`: Memo and signature area
 
 ### UI Components
 
-#### FormInput Component
+The application uses a simplified component architecture with two main components:
 
-**Purpose**: Standardized input field with validation and events
+#### CheckForm Component
 
-**Attributes**:
+- Manages check data and coordinates with preview
+- Handles form validation and user interactions
+- Emits events for data synchronization
 
-- `type`: Input type (text, number, date, etc.)
-- `placeholder`: Placeholder text
-- `value`: Current value
-- `required`: Boolean for required fields
-- `max-length`: Maximum character length
+#### CheckPreview Component
 
-**Events**:
-
-- `input`: Fired on value change with `detail.value`
-- `blur`: Fired when input loses focus
-- `validation-error`: Fired when validation fails
-
-#### FormLabel Component
-
-**Purpose**: Accessible label component with consistent styling
-
-**Attributes**:
-
-- `for`: Associated input ID
-- `required`: Shows required indicator
-
-#### FormButton Component
-
-**Purpose**: Standardized button with variants
-
-**Attributes**:
-
-- `variant`: Button style (primary, outline, text)
-- `size`: Button size (small, medium, large)
-- `disabled`: Boolean for disabled state
+- Displays interactive check with editable fields
+- Supports real-time inline editing
+- Auto-converts amounts to words
+- Provides realistic check visualization
 
 ### Utility Functions
 
@@ -534,8 +505,14 @@ public/                     # Deploy this directory
 │   ├── main.js           # Application JavaScript
 │   ├── index.css         # Application styles
 │   ├── components/       # Web Components
+│   │   ├── check-form.js    # Main form component
+│   │   └── check-preview.js # Interactive check preview
 │   ├── utils/            # Utility functions
+│   │   └── convertNumberToWords.js # Amount conversion
 │   └── design-system/    # CSS design tokens
+│       ├── tokens.css       # Design tokens
+│       ├── typography.css   # Typography utilities
+│       └── layout.css       # Layout and component styles
 └── manifest.json         # PWA manifest
 ```
 
