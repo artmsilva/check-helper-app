@@ -1,20 +1,6 @@
-# Handwritten Check Hel## 🏗 Structure
+# Handwritten Check Helper
 
-````
-public/                    # Serve this directory
-├── index.html            # Entry point with import maps
-└── src/
-    ├── main.js          # App entry
-    ├── components/      # Web Components
-    │   ├── check-form.js   # Main form component
-    │   └── check-preview.js # Interactive check preview
-    ├── utils/           # Business logic
-    │   └── convertNumberToWords.js # Amount conversion
-    └── design-system/   # Styles
-        ├── tokens.css      # Design tokens
-        ├── typography.css  # Typography utilities
-        └── layout.css      # Layout and component styles
-```mple web app that helps you write checks accurately. Built with vanilla JavaScript and native ES modules - no build tools required!
+> A simple web app that helps you write checks accurately. Built with vanilla JavaScript and native ES modules - no build tools required!
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/artmsilva/check-helper-app)
 
@@ -26,25 +12,29 @@ public/                    # Serve this directory
 - **Mobile friendly** - Works on all devices
 - **Educational** - Clean, readable code for learning
 
-## � Quick Start
+## 🚀 Quick Start
 
 ```bash
 git clone <repository-url>
 cd check-helper-app
 python3 -m http.server 3000 --directory public
 # Open http://localhost:3000
-````
+```
 
-## � Structure
+## 🏗 Structure
 
 ```
 public/                    # Serve this directory
 ├── index.html            # Entry point with import maps
 └── src/
     ├── main.js          # App entry
+    ├── index.css         # CSS imports
+    ├── styles.css        # Unified layered stylesheet
     ├── components/      # Web Components
-    ├── utils/           # Business logic
-    └── design-system/   # Styles
+    │   ├── check-form.js   # Main form component
+    │   └── check-preview.js # Interactive check preview
+    └── utils/           # Business logic
+        └── convertNumberToWords.js # Amount conversion
 ```
 
 ## 💻 Development
@@ -103,8 +93,9 @@ Full documentation available in [`docs/`](docs/):
 - [Design System](docs/DESIGN_SYSTEM.md)
 - [Technical Specs](docs/TECHNICAL_SPECIFICATION.md)
 - [Recent Cleanup Notes](docs/CLEANUP_NOTES.md)
+- [CSS Refactoring Notes](docs/CSS_REFACTORING.md)
 
-> **Recent Update (v1.1)**: Streamlined codebase by removing unused UI components while maintaining full functionality. See [cleanup notes](docs/CLEANUP_NOTES.md) for details.
+> **Recent Update (v1.1)**: Streamlined codebase by removing unused UI components and refactored to unified CSS architecture. See [cleanup notes](docs/CLEANUP_NOTES.md) and [CSS refactoring](docs/CSS_REFACTORING.md) for details.
 
 ## 🌟 Browser Support
 
