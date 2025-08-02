@@ -4,23 +4,6 @@
   "private": true,
   "type": "module",
   "description": "Free interactive check writing tool with real-time amount-to-words conversion. Click and edit directly on a realistic check preview. Built with vanilla JavaScript and native ES modules - no build tools required!",
-  "keywords": [
-    "check-writer",
-    "check-helper",
-    "amount-to-words",
-    "check-writing-tool",
-    "bank-check",
-    "personal-finance",
-    "business-checks",
-    "money-converter",
-    "financial-tools",
-    "interactive-editor",
-    "vanilla-javascript",
-    "native-modules",
-    "no-build-tools",
-    "educational"
-  ],
-  "homepage": "https://check-helper.app",
   "repository": {
     "type": "git",
     "url": "https://github.com/artmsilva/check-helper-app.git"
@@ -28,20 +11,7 @@
   "bugs": {
     "url": "https://github.com/artmsilva/check-helper-app/issues"
   },
-  "author": {
-    "name": "Check Helper Team",
-    "email": "hello@check-helper.app",
-    "url": "https://check-helper.app"
-  },
   "license": "MIT",
-  "scripts": {
-    "dev": "node dev-server.js",
-    "start": "node dev-server.js",
-    "serve": "python3 -m http.server 3000",
-    "preview": "python3 -m http.server 3000",
-    "deploy": "vercel --prod",
-    "deploy:preview": "vercel"
-  },
   "engines": {
     "node": ">=22.0.0"
   },

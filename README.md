@@ -70,15 +70,16 @@ This project intentionally avoids build tools like Webpack, Vite, or Parcel to d
 
 ## 📖 Table of Contents
 
-- [Installation](#installation)
+- [Quick Start](#-quick-start)
+- [No Build Approach](#-no-build-approach)
+- [Installation](#-installation)
 - [Usage](#usage)
 - [Features](#features)
 - [Architecture](#architecture)
 - [Development](#development)
-- [Testing](#testing)
-- [Deployment](#deployment)
+- [Deployment](#-deployment)
+- [Documentation](#-documentation)
 - [Contributing](#contributing)
-- [Documentation](#documentation)
 - [License](#license)
 
 ## 🛠️ Installation
@@ -385,12 +386,23 @@ Please use GitHub Issues for:
 
 ## 📚 Documentation
 
-### Additional Resources
+Comprehensive documentation is available in the [`docs/`](docs/) directory:
 
-- **[Product Requirements Document](PRODUCT_REQUIREMENTS.md)** - Detailed product specifications and business requirements
-- **[Technical Specification](TECHNICAL_SPECIFICATION.md)** - Comprehensive technical documentation and architecture details
-- **[Design System](DESIGN_SYSTEM.md)** - Design tokens, components, and styling guidelines
-- **[Storybook Documentation](STORYBOOK_README.md)** - Component library and examples
+### **📖 Documentation Index**
+
+- **[📚 Complete Documentation Guide](docs/README.md)** - Master index to all documentation
+
+### **Core Documentation**
+
+- **[🎨 Design System](docs/DESIGN_SYSTEM.md)** - Component library and design tokens
+- **[🔧 Technical Specification](docs/TECHNICAL_SPECIFICATION.md)** - Architecture and implementation details
+- **[📋 Product Requirements](docs/PRODUCT_REQUIREMENTS.md)** - Feature specifications and requirements
+
+### **Development Guides**
+
+- **[🚀 Migration Notes](docs/MIGRATION_NOTES.md)** - Vite to native ES modules migration
+- **[📁 Structure Update](docs/STRUCTURE_UPDATE.md)** - File organization for Vercel deployment
+- **[📖 Storybook Guide](docs/STORYBOOK_README.md)** - Component development and testing
 
 ### API Documentation
 
