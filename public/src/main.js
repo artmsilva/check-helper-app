@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   root.innerHTML = `
     <div class="app-container">
-      <h1 class="app-title">Handwritten Check Helper</h1>
       <check-form></check-form>
     </div>
   `;
