@@ -131,48 +131,11 @@
 
     <!-- DNS Prefetch for External Resources -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-
-    <!-- Performance Monitoring -->
-    <script>
-      // Core Web Vitals tracking
-      function sendToAnalytics(metric) {
-        // Replace with your analytics endpoint
-        console.log("Performance metric:", metric);
-      }
-
-      // Track page load performance
-      window.addEventListener("load", () => {
-        // Measure page load time
-        const loadTime =
-          performance.timing.loadEventEnd - performance.timing.navigationStart;
-        sendToAnalytics({
-          name: "page_load_time",
-          value: loadTime,
-          url: window.location.pathname,
-        });
-      });
-    </script>
   </head>
   <body>
     <div id="root"></div>
 
     <!-- Native ES Module Loading -->
     <script type="module" src="./src/main.js"></script>
-
-    <!-- Service Worker Registration for PWA -->
-    <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker
-            .register("./sw.js")
-            .then((registration) => {
-              console.log("SW registered: ", registration);
-            })
-            .catch((registrationError) => {
-              console.log("SW registration failed: ", registrationError);
-            });
-        });
-      }
-    </script>
   </body>
 </html>
