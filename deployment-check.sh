@@ -10,12 +10,12 @@ echo ""
 echo "📁 Checking required files..."
 
 required_files=(
-    "index.html"
+    "public/index.html"
     "vercel.json"
-    "src/main.js"
-    "src/components/check-form.js"
-    "src/components/check-preview.js"
-    "src/utils/convertNumberToWords.js"
+    "public/src/main.js"
+    "public/src/components/check-form.js"
+    "public/src/components/check-preview.js"
+    "public/src/utils/convertNumberToWords.js"
 )
 
 missing_files=()
@@ -51,15 +51,15 @@ else
 fi
 
 # Check import map syntax in HTML
-if grep -q '"imports"' index.html; then
-    echo "  ✅ Import map found in index.html"
+if grep -q '"imports"' public/index.html; then
+    echo "  ✅ Import map found in public/index.html"
 else
-    echo "  ❌ Import map not found in index.html"
+    echo "  ❌ Import map not found in public/index.html"
     exit 1
 fi
 
 # Check for ES module imports
-if grep -q 'type="module"' index.html; then
+if grep -q 'type="module"' public/index.html; then
     echo "  ✅ ES module script tag found"
 else
     echo "  ❌ ES module script tag not found"
@@ -70,14 +70,14 @@ echo ""
 echo "🌐 Checking browser compatibility requirements..."
 
 # Check for import maps usage
-if grep -q 'type="importmap"' index.html; then
+if grep -q 'type="importmap"' public/index.html; then
     echo "  ✅ Import maps configured (requires Chrome 89+, Firefox 87+, Safari 14+)"
 else
     echo "  ⚠️  No import maps found (may use relative imports)"
 fi
 
 # Check for Web Components
-if grep -q 'customElements.define' src/components/*.js 2>/dev/null; then
+if grep -q 'customElements.define' public/src/components/*.js 2>/dev/null; then
     echo "  ✅ Web Components detected (requires modern browser)"
 else
     echo "  ⚠️  No Web Components detected"
