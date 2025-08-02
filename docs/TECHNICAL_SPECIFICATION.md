@@ -50,13 +50,13 @@ The Handwritten Check Helper is a client-side single-page application built with
 
 ### Technology Stack Details
 
-| Layer           | Technology      | Version | Purpose                           |
-| --------------- | --------------- | ------- | --------------------------------- |
-| Runtime         | Modern Browsers | ES2020+ | Application execution environment |
-| Build Tool      | Vite            | ^4.0.4  | Development server and bundling   |
-| Components      | Web Components  | Native  | Custom element architecture       |
-| Styling         | CSS3            | Native  | Styling with design system        |
-| Package Manager | npm             | Latest  | Dependency management             |
+| Layer         | Technology      | Version | Purpose                           |
+| ------------- | --------------- | ------- | --------------------------------- |
+| Runtime       | Modern Browsers | ES2020+ | Application execution environment |
+| Module System | Native ES       | Native  | Import/export functionality       |
+| Components    | Web Components  | Native  | Custom element architecture       |
+| Styling       | CSS3            | Native  | Styling with design system        |
+| Deployment    | Static Hosting  | Any     | File serving (Vercel, etc.)       |
 
 ## Architecture Design
 
@@ -122,7 +122,7 @@ Each component manages its own state with optional sharing through:
 ### Module Organization
 
 ```
-src/
+public/src/
 ├── main.js                    # Application entry point
 ├── index.css                  # Global styles
 ├── components/
@@ -146,7 +146,7 @@ src/
 
 ### CheckForm Component
 
-**File**: `src/components/check-form.js`
+**File**: `public/src/components/check-form.js`
 
 #### Purpose
 
@@ -186,7 +186,7 @@ this.formData = {
 
 ### CheckPreview Component
 
-**File**: `src/components/check-preview.js`
+**File**: `public/src/components/check-preview.js`
 
 #### Purpose
 
@@ -258,7 +258,7 @@ Receives data through the `data` attribute as JSON string:
 
 #### convertNumberToWords Module
 
-**File**: `src/utils/convertNumberToWords.js`
+**File**: `public/src/utils/convertNumberToWords.js`
 
 ##### Core Algorithm
 
@@ -514,26 +514,29 @@ describe("CheckForm Integration", () => {
 
 ### Build Process
 
+Since this project uses no build tools, development is simple:
+
 ```bash
-# Development server
-npm run dev
-
-# Production build
-npm run build
-
-# Preview production build
-npm run serve
+# Development server options
+python3 -m http.server 3000 --directory public
+# or
+npx serve public
+# or
+npx http-server public
 ```
 
-### Build Output
+### Deployment Output
 
 ```
-dist/
-├── index.html          # Main HTML file
-├── assets/
-│   ├── index.[hash].js # Bundled JavaScript
-│   └── index.[hash].css # Bundled CSS
-└── favicon.ico         # Application icon
+public/                     # Deploy this directory
+├── index.html             # Entry point with import maps
+├── src/
+│   ├── main.js           # Application JavaScript
+│   ├── index.css         # Application styles
+│   ├── components/       # Web Components
+│   ├── utils/            # Utility functions
+│   └── design-system/    # CSS design tokens
+└── manifest.json         # PWA manifest
 ```
 
 ### Deployment Targets
@@ -552,8 +555,8 @@ dist/
 
 ### Code Quality
 
-- ESLint for JavaScript linting
-- Prettier for code formatting
+- No build tool configuration needed
+- Prettier for code formatting (optional)
 - JSDoc comments for documentation
 - Consistent naming conventions
 

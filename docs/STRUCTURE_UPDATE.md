@@ -6,28 +6,26 @@ Your Check Helper app is now properly structured for Vercel deployment:
 
 ```
 check-helper-app/
-├── index.html                    # Entry point (root level)
-├── vercel.json                   # Vercel configuration
-├── package.json                  # Project metadata
-├── public/                       # Public assets directory
-│   ├── src/                      # Source files (served statically)
-│   │   ├── main.js              # Main application
-│   │   ├── index.css            # Main styles
-│   │   ├── components/          # Web Components
-│   │   │   ├── check-form.js
-│   │   │   ├── check-preview.js
-│   │   │   └── ui/              # UI Components
-│   │   ├── utils/               # Utility functions
-│   │   │   └── convertNumberToWords.js
-│   │   └── design-system/       # CSS Design System
-│   │       ├── tokens.css
-│   │       ├── layout.css
-│   │       ├── typography.css
-│   │       └── components.css
-│   ├── manifest.json            # PWA manifest
-│   ├── sw.js                    # Service worker
-│   └── robots.txt               # SEO robots file
-└── deployment-check.sh          # Pre-deployment verification
+├── public/                       # Deploy this directory to Vercel
+│   ├── index.html               # Entry point with import maps
+│   └── src/                     # Source files (served statically)
+│       ├── main.js              # Main application
+│       ├── index.css            # Main styles
+│       ├── components/          # Web Components
+│       │   ├── check-form.js
+│       │   ├── check-preview.js
+│       │   └── ui/              # UI Components
+│       ├── utils/               # Utility functions
+│       │   └── convertNumberToWords.js
+│       └── design-system/       # CSS Design System
+│           ├── tokens.css
+│           ├── layout.css
+│           ├── typography.css
+│           └── components.css
+├── docs/                        # Documentation (excluded from deployment)
+├── vercel.json                  # Vercel configuration
+├── package.json                 # Project metadata (no dependencies!)
+└── .vercelignore               # Files to exclude from deployment
 ```
 
 ## 🔧 **Updated Import Maps**
@@ -37,11 +35,11 @@ The import map now correctly points to the public directory:
 ```javascript
 {
   "imports": {
-    "check-helper/": "./public/src/",
-    "utils/": "./public/src/utils/",
-    "components/": "./public/src/components/",
-    "ui/": "./public/src/components/ui/",
-    "design-system/": "./public/src/design-system/"
+    "check-helper/": "./src/",
+    "utils/": "./src/utils/",
+    "components/": "./src/components/",
+    "ui/": "./src/components/ui/",
+    "design-system/": "./src/design-system/"
   }
 }
 ```
@@ -50,30 +48,25 @@ The import map now correctly points to the public directory:
 
 ### ✅ **What Works Now:**
 
-- ✅ All ES modules load from `/public/src/` paths
-- ✅ CSS files load correctly from `/public/src/design-system/`
+- ✅ All ES modules load from `/src/` paths (relative to public/index.html)
+- ✅ CSS files load correctly from `/src/design-system/`
 - ✅ Vercel serves static files from the `public` folder automatically
 - ✅ Import maps resolve correctly for all components
-- ✅ Service worker loads from `/public/sw.js`
-- ✅ PWA manifest loads from `/public/manifest.json`
 
 ### 🎯 **Vercel Configuration:**
 
 The `vercel.json` now has correct headers for:
 
-- JavaScript modules in `/public/src/**/*.js`
-- CSS files in `/public/src/**/*.css`
-- Static assets in `/public/**`
+- JavaScript modules in `/src/**/*.js`
+- CSS files in `/src/**/*.css`
+- Static assets served from `public/` directory
 - Proper caching strategies
 
 ### 📦 **Deploy Commands:**
 
 ```bash
 # Test locally first
-npm run dev
-
-# Run deployment check
-./deployment-check.sh
+python3 -m http.server 3000 --directory public
 
 # Deploy to Vercel
 git add .
@@ -81,7 +74,6 @@ git commit -m "Updated structure for Vercel deployment"
 git push origin main
 
 # Then deploy via Vercel dashboard or CLI
-npm run deploy
 ```
 
 ## 🌟 **Why This Structure Works on Vercel:**

@@ -60,9 +60,12 @@ check-helper-app/
 ### **Development Commands**
 
 ```bash
-npm run dev        # Start development server
-npm run deploy     # Deploy to Vercel
-./deployment-check.sh # Verify deployment readiness
+# Start development server
+python3 -m http.server 3000 --directory public
+
+# Alternative: Use Node.js static servers
+npx serve public
+npx http-server public
 ```
 
 ### **File Structure**
@@ -77,6 +80,7 @@ npm run deploy     # Deploy to Vercel
 ```javascript
 {
   "imports": {
+    "check-helper/": "./src/",
     "utils/": "./src/utils/",
     "components/": "./src/components/",
     "ui/": "./src/components/ui/",
@@ -96,10 +100,11 @@ npm run deploy     # Deploy to Vercel
 
 ### **For Developers**
 
-1. Clone the repository and run `npm run dev`
-2. Explore the `public/src/components/` directory
-3. Study the import map configuration in `public/index.html`
-4. Read [STRUCTURE_UPDATE.md](STRUCTURE_UPDATE.md) for deployment insights
+1. Clone the repository
+2. Start a development server: `python3 -m http.server 3000 --directory public`
+3. Explore the `public/src/components/` directory
+4. Study the import map configuration in `public/index.html`
+5. Read [STRUCTURE_UPDATE.md](STRUCTURE_UPDATE.md) for deployment insights
 
 ### **For Instructors**
 

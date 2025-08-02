@@ -103,14 +103,15 @@ Created `dev-server.js` - a simple Node.js HTTP server that:
 ### Development
 
 ```bash
-# Option 1: Node.js development server (recommended)
-npm run dev
+# Option 1: Python HTTP server (simple and reliable)
+python3 -m http.server 3000 --directory public
 
-# Option 2: Python HTTP server
-npm run serve
+# Option 2: Node.js static servers
+npx serve public
+npx http-server public
 
 # Option 3: Any static server
-# Just serve the root directory on any port
+# Just serve the public/ directory on any port
 ```
 
 ### Browser Compatibility Check
@@ -121,20 +122,21 @@ Visit `/browser-check.html` to test your browser's compatibility with the modern
 
 ```
 check-helper-app/
-├── index.html              # Entry point with import map
-├── dev-server.js           # Native development server
-├── browser-check.html      # Compatibility checker
+├── public/
+│   ├── index.html          # Entry point with import map
+│   └── src/
+│       ├── main.js         # App initialization
+│       ├── components/     # Web Components
+│       ├── utils/          # Utility functions
+│       └── design-system/  # CSS files
+├── docs/                   # Documentation
 ├── package.json            # No build dependencies!
-└── src/
-    ├── main.js             # App initialization
-    ├── components/         # Web Components
-    ├── utils/              # Utility functions
-    └── design-system/      # CSS files
+└── vercel.json            # Deployment config
 ```
 
 ## Import Map Configuration
 
-The import map in `index.html` defines clean import paths:
+The import map in `public/index.html` defines clean import paths:
 
 ```json
 {
