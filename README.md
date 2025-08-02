@@ -28,7 +28,6 @@ public/                    # Serve this directory
 ├── index.html            # Entry point with import maps
 └── src/
     ├── main.js          # App entry
-    ├── index.css         # CSS imports
     ├── styles.css        # Unified layered stylesheet
     ├── components/      # Web Components
     │   ├── check-form.js   # Main form component

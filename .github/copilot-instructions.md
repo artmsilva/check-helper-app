@@ -56,7 +56,6 @@ This is an **Interactive Check Helper** - a vanilla JavaScript web application t
 ```
 public/src/
 ├── main.js                    # Application entry point
-├── index.css                  # CSS imports
 ├── styles.css                 # Unified layered stylesheet (@layer)
 ├── components/
 │   ├── check-form.js         # Main form container component
