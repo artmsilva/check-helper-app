@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg-main">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="color-scheme" content="light dark" />
 
     <!-- Primary Meta Tags -->
     <title>
@@ -73,19 +75,8 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/manifest.json" />
 
-    <!-- Import Maps for Native ES Modules -->
-    <script type="importmap">
-      {
-        "imports": {
-          "check-helper/": "./src/",
-          "utils/": "./src/utils/",
-          "components/": "./src/components/"
-        }
-      }
-    </script>
-
     <!-- CSS Import -->
-    <link rel="stylesheet" href="./src/styles.css" />
+    <link rel="stylesheet" href="./src/app.css" />
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -122,10 +113,62 @@
     <!-- DNS Prefetch for External Resources -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com" />
   </head>
-  <body>
-    <div id="root"></div>
+  <body class="bg-main p-15">
+    <div id="check" class="bg-main c-base">
+      <div class="check-container">
+        <div class="flex-between mb-15">
+          <div class="check-number">#1001</div>
+          <div class="bank-info">
+            <div>First National Bank</div>
+            <div>123 Main St, City, ST 12345</div>
+          </div>
+        </div>
 
-    <!-- Native ES Module Loading -->
-    <script type="module" src="./src/main.js"></script>
+        <div class="text-right mb-15">
+          Date:
+          <span contenteditable="true" data-placeholder="Click to set date"
+            >2025-08-04</span
+          >
+        </div>
+
+        <div class="mb-15">
+          Pay to the order of
+          <span
+            contenteditable="true"
+            class="placeholder c-muted"
+            data-placeholder="Click to enter payee"
+            >Click to enter payee</span
+          >
+          $
+          <span
+            contenteditable="true"
+            class="placeholder c-muted"
+            data-placeholder="0.00"
+            >0.00</span
+          >
+        </div>
+
+        <div class="mb-15 pb-5 border-bottom">
+          <span class="words c-muted">Amount in words</span>
+          DOLLARS
+        </div>
+
+        <div class="flex-center mb-15">
+          Memo:
+          <span
+            contenteditable="true"
+            class="placeholder c-muted"
+            data-placeholder="Optional memo"
+            >Optional memo</span
+          >
+          <div class="signature-line text-center">
+            _________________________
+          </div>
+        </div>
+
+        <div class="absolute-bottom micr">⑆123456789⑆ 1234567890 ⑆ 1001</div>
+      </div>
+    </div>
+    <script src="./src/app.js"></script>
   </body>
 </html>

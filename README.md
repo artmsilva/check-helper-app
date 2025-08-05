@@ -1,16 +1,18 @@
 # Handwritten Check Helper
 
-> A simple web app that helps you write checks accurately. Built with vanilla JavaScript and native ES modules - no build tools required!
+> An ultra-simple web app that helps you write checks accurately. Just click and edit the check fields directly - no complexity, just functionality!
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/artmsilva/check-helper-app)
 
 ## ✨ Features
 
-- **Real-time conversion** - Numeric amounts to written words
-- **Visual preview** - See your check before writing
-- **No build tools** - Runs directly in browsers using native ES modules
+- **Click to edit** - Direct inline editing of check fields
+- **Real-time conversion** - Numeric amounts to written words instantly
+- **Zero dependencies** - Pure vanilla JavaScript, works offline
+- **Ultra-lightweight** - Only 255 lines of code total
+- **Atomic CSS** - Custom utility-first framework for maximum efficiency
 - **Mobile friendly** - Works on all devices
-- **Educational** - Clean, readable code for learning
+- **Instant loading** - No build tools, no modules, no complexity
 
 ## 🚀 Quick Start
 
@@ -25,10 +27,10 @@ python3 -m http.server 3000 --directory public
 
 ```
 public/                    # Serve this directory
-├── index.html            # Entry point with import maps
+├── index.html            # Entry point (with full SEO)
 └── src/
-    ├── main.js          # App entry
-    ├── styles.css        # Unified layered stylesheet
+    ├── app.js           # All functionality (182 lines)
+    └── app.css          # Atomic CSS framework (73 lines)
     ├── components/      # Web Components
     │   ├── check-form.js   # Main form component
     │   └── check-preview.js # Interactive check preview
