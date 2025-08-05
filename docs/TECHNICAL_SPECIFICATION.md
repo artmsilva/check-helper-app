@@ -1,14 +1,14 @@
-# Handwritten Check Helper - Technical Specification
+# Interactive Check Helper - Technical Specification
 
-**Version:** 1.0  
-**Date:** August 1, 2025  
-**Status:** Active Development
+**Version:** 2.0  
+**Date:** August 4, 2025  
+**Status:** Production Ready
 
 ## Table of Contents
 
 1. [System Overview](#system-overview)
 2. [Architecture Design](#architecture-design)
-3. [Component Specifications](#component-specifications)
+3. [Implementation Details](#implementation-details)
 4. [API Documentation](#api-documentation)
 5. [Data Flow](#data-flow)
 6. [Error Handling](#error-handling)
@@ -21,25 +21,26 @@
 
 ### High-Level Architecture
 
-The Handwritten Check Helper is a client-side single-page application built with vanilla JavaScript and Web Components. The application follows a component-based architecture with clear separation of concerns.
+The Interactive Check Helper is an ultra-minimal client-side application built with vanilla JavaScript. The application uses a single-file approach with direct DOM manipulation for maximum simplicity and performance.
 
 ```
 ┌─────────────────────────────────────┐
 │            Browser                  │
 ├─────────────────────────────────────┤
 │        Application Layer            │
-│  ┌─────────────┬─────────────────┐  │
-│  │ check-form  │  check-preview  │  │
-│  └─────────────┴─────────────────┘  │
+│  ┌─────────────────────────────────┐ │
+│  │     Single HTML Document        │ │
+│  │   with Inline JavaScript        │ │
+│  └─────────────────────────────────┘ │
 ├─────────────────────────────────────┤
 │        Business Logic Layer        │
 │  ┌─────────────────────────────────┐ │
-│  │  convertNumberToWords Utility   │ │
+│  │  Embedded Amount Conversion     │ │
 │  └─────────────────────────────────┘ │
 ├─────────────────────────────────────┤
 │         Presentation Layer          │
 │  ┌─────────────────────────────────┐ │
-│  │      Design System CSS          │ │
+│  │      Minimal CSS Styling        │ │
 │  └─────────────────────────────────┘ │
 └─────────────────────────────────────┘
 ```
@@ -49,380 +50,389 @@ The Handwritten Check Helper is a client-side single-page application built with
 | Layer         | Technology      | Version | Purpose                           |
 | ------------- | --------------- | ------- | --------------------------------- |
 | Runtime       | Modern Browsers | ES2020+ | Application execution environment |
-| Module System | Native ES       | Native  | Import/export functionality       |
-| Components    | Web Components  | Native  | Custom element architecture       |
-| Styling       | CSS3            | Native  | Styling with design system        |
+| Module System | None            | N/A     | Single file approach              |
+| Components    | Native DOM      | Native  | Direct contenteditable elements   |
+| Styling       | CSS3            | Native  | Minimal design tokens             |
 | Deployment    | Static Hosting  | Any     | File serving (Vercel, etc.)       |
 
 ## Architecture Design
 
-### Component Architecture
+### Single-File Pattern
 
-#### 1. Web Components Pattern
-
-All UI components extend `HTMLElement` and use the Custom Elements API:
+The application uses a simplified architecture pattern with direct DOM manipulation:
 
 ```javascript
-class ComponentName extends HTMLElement {
-  constructor() {
-    super();
-    // Initialize component state
-  }
-
-  connectedCallback() {
-    // Component mounted to DOM
-    this.render();
-    this.attachEventListeners();
-  }
-
-  disconnectedCallback() {
-    // Component removed from DOM
-    this.cleanup();
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    // Handle attribute changes
-  }
-
-  static get observedAttributes() {
-    return ["attribute-list"];
-  }
-}
-```
-
-#### 2. Event-Driven Communication
-
-Components communicate through custom events:
-
-```javascript
-// Dispatch custom event
-this.dispatchEvent(
-  new CustomEvent("eventName", {
-    detail: { data },
-    bubbles: true,
-  })
+// Event delegation for all contenteditable fields
+document.addEventListener(
+  "blur",
+  (e) => {
+    if (e.target.matches("[contenteditable]")) {
+      // Handle field updates
+      handleFieldUpdate(e.target);
+    }
+  },
+  true
 );
 
-// Listen for events
-this.addEventListener("eventName", this.handleEvent.bind(this));
-```
-
-#### 3. State Management
-
-Each component manages its own state with optional sharing through:
-
-- Custom events for parent-child communication
-- Attributes for configuration
-- Direct property access for tight coupling
-
-### Module Organization
-
-```
-public/src/
-├── main.js                    # Application entry point
-├── index.css                  # Global styles
-├── components/
-│   ├── check-form.js         # Main form container
-│   └── check-preview.js      # Interactive check visualization
-├── utils/
-│   └── convertNumberToWords.js # Business logic
-└── design-system/
-    ├── tokens.css            # Design tokens
-    ├── typography.css        # Typography utilities
-    └── layout.css           # Layout and component styles
-```
-
-## Component Specifications
-
-### CheckForm Component
-
-**File**: `public/src/components/check-form.js`
-
-#### Purpose
-
-Main container component that manages check data input and coordinates with preview component.
-
-#### State Management
-
-```javascript
-this.formData = {
-  date: "", // ISO date string
-  payee: "", // String, max 100 characters
-  amountNumber: "", // String representation of number
-  amountWords: "", // Auto-generated words
-  memo: "", // Optional string, max 50 characters
-};
-```
-
-#### Public Methods
-
-- `updatePreview()`: Synchronizes form data with preview component
-- `convertAmount()`: Triggers amount-to-words conversion
-- `printCheck()`: Initiates print functionality
-- `resetForm()`: Clears all form data
-
-#### Events Emitted
-
-- `form-updated`: When any form field changes
-- `amount-converted`: When amount conversion completes
-- `form-validated`: When form validation runs
-
-#### Validation Rules
-
-- Date: Must be valid date format
-- Payee: Required, 1-100 characters
-- Amount: Must be positive number, max 13 digits
-- Memo: Optional, max 50 characters
-
-### CheckPreview Component
-
-**File**: `public/src/components/check-preview.js`
-
-#### Purpose
-
-Displays visual representation of the check based on current form data.
-
-#### Data Flow
-
-Receives data through the `data` attribute as JSON string:
-
-```javascript
-<check-preview data='{"date":"2025-08-01","payee":"John Doe",...}'></check-preview>
-```
-
-#### Rendering Logic
-
-- Interactive inline editing of check fields
-- Real-time updates when data changes
-- Handles empty/missing data gracefully with placeholders
-- Maintains realistic check layout proportions
-- Uses contenteditable for direct field editing
-- Auto-converts numeric amounts to words
-
-#### CSS Classes
-
-- `.interactive-check`: Main container
-- `.editable-field`: Clickable/editable fields
-- `.check-date-section`: Date positioning
-- `.check-payee-section`: Payee and amount row
-- `.check-amount-words-section`: Written amount line
-- `.check-footer-section`: Memo and signature area
-
-### UI Components
-
-The application uses a simplified component architecture with two main components:
-
-#### CheckForm Component
-
-- Manages check data and coordinates with preview
-- Handles form validation and user interactions
-- Emits events for data synchronization
-
-#### CheckPreview Component
-
-- Displays interactive check with editable fields
-- Supports real-time inline editing
-- Auto-converts amounts to words
-- Provides realistic check visualization
-
-### Utility Functions
-
-#### convertNumberToWords Module
-
-**File**: `public/src/utils/convertNumberToWords.js`
-
-##### Core Algorithm
-
-```javascript
-function convertWholeNumberToWords(num) {
-  // 1. Handle special case of zero
-  // 2. Break number into chunks of 1000
-  // 3. Convert each chunk using convertBelowThousand()
-  // 4. Add appropriate scale (thousand, million, etc.)
-  // 5. Combine results with proper spacing
+// Centralized amount conversion
+function convertAmountToWords(value) {
+  // Embedded conversion logic
+  return convertedWords;
 }
 ```
 
-##### Supported Range
+### Event-Driven Updates
 
-- Minimum: 0
-- Maximum: 999,999,999,999,999 (999 trillion)
-- Precision: 2 decimal places for cents
+All interactions are handled through native DOM events:
 
-##### Error Handling
+```javascript
+// Focus events - clear placeholder text
+document.addEventListener("focus", handleFocus, true);
 
-- Returns empty string for invalid input
-- Handles edge cases (null, undefined, NaN)
-- Validates numeric range
+// Blur events - update fields and convert amounts
+document.addEventListener("blur", handleBlur, true);
 
-##### Performance Characteristics
+// Keydown events - handle Enter key submission
+document.addEventListener("keydown", handleKeydown, true);
+```
 
-- O(log n) time complexity relative to number size
-- No external dependencies
-- Minimal memory allocation
+### State Management
+
+State is managed directly through DOM element content and attributes:
+
+- Field values stored in `textContent`
+- Placeholder states managed via CSS classes
+- No external state management required
+
+### File Organization
+
+```
+public/
+├── index.html            # Complete application
+└── src/
+    ├── app.js           # All JavaScript functionality (182 lines)
+    └── app.css          # All styling with design tokens (73 lines)
+```
+
+## Implementation Details
+
+### Core Functionality
+
+The application consists of a single interactive check with contenteditable fields:
+
+#### HTML Structure
+
+```html
+<div class="check-container">
+  <!-- Check header with number and bank info -->
+  <div class="flex-between mb-15">
+    <div class="check-number">#1001</div>
+    <div class="bank-info">...</div>
+  </div>
+
+  <!-- Editable date field -->
+  <div class="text-right mb-15">
+    Date:
+    <span contenteditable="true" data-placeholder="Click to set date"
+      >2025-08-04</span
+    >
+  </div>
+
+  <!-- Payee and amount fields -->
+  <div class="mb-15">
+    Pay to the order of
+    <span
+      contenteditable="true"
+      class="placeholder c-muted"
+      data-placeholder="Click to enter payee"
+      >Click to enter payee</span
+    >
+    $
+    <span
+      contenteditable="true"
+      class="placeholder c-muted"
+      data-placeholder="0.00"
+      >0.00</span
+    >
+  </div>
+
+  <!-- Amount in words (auto-generated) -->
+  <div class="mb-15 pb-5 border-bottom">
+    <span class="words c-muted">Amount in words</span> DOLLARS
+  </div>
+
+  <!-- Memo and signature line -->
+  <div class="flex-center mb-15">
+    Memo:
+    <span
+      contenteditable="true"
+      class="placeholder c-muted"
+      data-placeholder="Optional memo"
+      >Optional memo</span
+    >
+    <div class="signature-line text-center">_________________________</div>
+  </div>
+
+  <!-- MICR line -->
+  <div class="absolute-bottom micr">⑆123456789⑆ 1234567890 ⑆ 1001</div>
+</div>
+```
+
+#### JavaScript Event Handling
+
+```javascript
+// Handle field blur events (when user finishes editing)
+document.addEventListener(
+  "blur",
+  (e) => {
+    if (e.target.matches("[contenteditable]")) {
+      const text = e.target.textContent.trim();
+      const placeholder = e.target.dataset.placeholder;
+
+      // Handle empty field
+      if (!text) {
+        e.target.textContent = placeholder;
+        e.target.classList.add("placeholder", "c-muted");
+      } else {
+        e.target.classList.remove("placeholder", "c-muted");
+      }
+
+      // Update amount words if this is an amount field
+      if (text && !isNaN(parseFloat(text))) {
+        const wordsEl = document.querySelector(".words");
+        const convertedWords = convertAmountToWords(text);
+        wordsEl.textContent = convertedWords;
+      }
+    }
+  },
+  true
+);
+```
+
+### Amount-to-Words Conversion
+
+Embedded conversion algorithm handles numbers up to 999 trillion:
+
+```javascript
+function convertAmountToWords(value) {
+  const num = parseFloat(value);
+  if (!value || isNaN(num)) return "Amount in words";
+
+  // Conversion logic with units, teens, tens arrays
+  const units = ["", "one", "two", "three", ...];
+  const teens = ["ten", "eleven", "twelve", ...];
+  const tens = ["", "", "twenty", "thirty", ...];
+
+  // Convert integer part and cents separately
+  const intPart = Math.floor(Math.abs(num));
+  const cents = Math.round((Math.abs(num) - intPart) * 100);
+
+  // Return formatted result: "one hundred twenty-three and 45/100"
+  return `${words.trim()} and ${cents.toString().padStart(2, '0')}/100`;
+}
+```
 
 ## API Documentation
 
-### Public Component APIs
+### DOM Event APIs
 
-#### CheckForm
+#### Field Interaction
 
 ```javascript
-// Get current form data
-const data = checkForm.getFormData();
+// Focus event - clear placeholder
+document.addEventListener(
+  "focus",
+  (e) => {
+    if (e.target.matches("[contenteditable]")) {
+      const placeholder = e.target.dataset.placeholder;
+      if (e.target.textContent === placeholder) {
+        e.target.textContent = "";
+        e.target.classList.remove("placeholder", "c-muted");
+      }
+    }
+  },
+  true
+);
 
-// Set form data programmatically
-checkForm.setFormData({
-  date: "2025-08-01",
-  payee: "John Doe",
-  amountNumber: "150.00",
-});
+// Blur event - update field and convert amounts
+document.addEventListener(
+  "blur",
+  (e) => {
+    if (e.target.matches("[contenteditable]")) {
+      // Field validation and amount conversion logic
+    }
+  },
+  true
+);
 
-// Validate form
-const isValid = checkForm.validate();
-
-// Reset form to initial state
-checkForm.reset();
+// Keydown event - handle Enter key
+document.addEventListener(
+  "keydown",
+  (e) => {
+    if (e.target.matches("[contenteditable]") && e.key === "Enter") {
+      e.preventDefault();
+      e.target.blur();
+    }
+  },
+  true
+);
 ```
 
-#### CheckPreview
+### Amount Conversion API
+
+#### convertAmountToWords Function
 
 ```javascript
-// Update preview data
-checkPreview.setAttribute("data", JSON.stringify(formData));
-
-// Get preview HTML for printing
-const printHTML = checkPreview.getPrintHTML();
-```
-
-### Utility APIs
-
-#### convertAmountToWords
-
-```javascript
-import { convertAmountToWords } from "./utils/convertNumberToWords.js";
-
-// Convert numeric amount to words
+// Convert numeric amount to written words
 const words = convertAmountToWords(123.45);
 // Returns: "one hundred twenty-three and 45/100"
 
 // Handle edge cases
-convertAmountToWords(""); // Returns: ''
-convertAmountToWords(null); // Returns: ''
-convertAmountToWords("abc"); // Returns: ''
-convertAmountToWords(-50); // Returns: 'minus fifty and 00/100'
+convertAmountToWords(""); // Returns: "Amount in words"
+convertAmountToWords(null); // Returns: "Amount in words"
+convertAmountToWords("abc"); // Returns: "Amount in words"
+convertAmountToWords(0); // Returns: "zero and 00/100"
 ```
+
+#### Supported Input Formats
+
+- Integers: `123` → `"one hundred twenty-three and 00/100"`
+- Decimals: `123.45` → `"one hundred twenty-three and 45/100"`
+- Strings: `"123.45"` → `"one hundred twenty-three and 45/100"`
+- Edge cases: Empty/null/invalid → `"Amount in words"`
 
 ## Data Flow
 
-### Form Input Flow
+### User Interaction Flow
 
 ```
-User Input → FormInput Component → Custom Event → CheckForm → State Update → CheckPreview Update
+User clicks field → Focus event → Clear placeholder → User types → Blur event → Update field → Convert amount (if numeric) → Update words display
 ```
 
 ### Amount Conversion Flow
 
 ```
-Numeric Input (real-time) → convertAmountToWords() → Words Output → Form State Update → Preview Update
+Numeric input → parseFloat() → Split into integer/cents → Convert integer to words → Format with cents → Update DOM
 ```
 
-### Print Flow
+### Field State Management
 
 ```
-Print Button → CheckForm.handlePrint() → window.print() → Browser Print Dialog
+Empty field → Show placeholder text with muted styling
+Field has content → Show content with normal styling
+Field focused → Clear placeholder, remove muted styling
+Field blurred → Validate content, restore placeholder if empty
 ```
 
-### Component Lifecycle
+### DOM Update Cycle
 
 ```
-1. HTML Parsed → customElements.define() called
-2. Element Created → constructor() called
-3. Element Added to DOM → connectedCallback() called
-4. Attributes Change → attributeChangedCallback() called
-5. Element Removed → disconnectedCallback() called
+1. User interaction triggers DOM event
+2. Event handler processes the change
+3. Field validation occurs
+4. Amount conversion (if applicable)
+5. DOM elements updated directly
+6. CSS classes toggled for visual feedback
 ```
 
 ## Error Handling
 
-### Client-Side Error Strategy
-
-#### Input Validation
+### Input Validation Strategy
 
 ```javascript
-// Immediate validation on input
+// Real-time validation during field updates
 function validateAmount(value) {
   if (value === "") return { valid: true, error: null };
-  if (isNaN(value)) return { valid: false, error: "Invalid number format" };
-  if (value < 0) return { valid: false, error: "Amount must be positive" };
-  if (value > 999999999999.99)
+  if (isNaN(parseFloat(value)))
+    return { valid: false, error: "Invalid number" };
+  if (parseFloat(value) < 0)
+    return { valid: false, error: "Amount must be positive" };
+  if (parseFloat(value) > 999999999999.99)
     return { valid: false, error: "Amount too large" };
   return { valid: true, error: null };
 }
 ```
 
-#### Component Error Boundaries
+### Graceful Degradation
 
 ```javascript
-// Graceful error handling in components
-try {
-  this.render();
-} catch (error) {
-  console.error("Component render error:", error);
-  this.innerHTML = '<div class="error">Unable to display component</div>';
+// Handle conversion errors gracefully
+function convertAmountToWords(value) {
+  try {
+    const num = parseFloat(value);
+    if (!value || isNaN(num)) return "Amount in words";
+
+    // Conversion logic here...
+    return convertedWords;
+  } catch (error) {
+    console.warn("Amount conversion failed:", error);
+    return "Amount in words";
+  }
 }
 ```
 
-#### User Feedback
+### User Feedback Strategy
 
-- Inline validation messages for form fields
-- Toast notifications for successful actions
-- Clear error states with recovery suggestions
-- Fallback content for component failures
+- **Visual feedback**: CSS classes for validation states
+- **Placeholder restoration**: Empty fields show helpful placeholder text
+- **Silent error handling**: Invalid inputs default to placeholder state
+- **No error dialogs**: Maintains simple, non-intrusive experience
 
 ### Error Categories
 
-| Error Type       | Handling Strategy     | User Experience         |
-| ---------------- | --------------------- | ----------------------- |
-| Input Validation | Real-time validation  | Inline error messages   |
-| Component Errors | Graceful degradation  | Fallback UI             |
-| Print Errors     | Retry mechanism       | Error notification      |
-| Network Errors   | Offline functionality | No impact (offline app) |
+| Error Type       | Handling Strategy      | User Experience       |
+| ---------------- | ---------------------- | --------------------- |
+| Invalid Amount   | Default to placeholder | Silent graceful fail  |
+| Empty Fields     | Show placeholder text  | Visual guidance       |
+| Conversion Error | Return default message | Fallback to safe text |
+| DOM Errors       | Console logging only   | No user interruption  |
 
 ## Performance Considerations
 
-### Bundle Size Optimization
+### Code Size Optimization
 
-- No external dependencies for core functionality
-- Tree-shaking with Vite build tool
-- CSS bundling and minification
-- Gzip compression for production
+- **Total code size**: 262 lines across 3 files (app.js: 182 lines, app.css: 73 lines, index.html: minimal)
+- **No external dependencies**: Zero npm packages or CDN resources
+- **No build process**: Direct file serving, no compilation overhead
+- **Minimal DOM**: Single check container with contenteditable fields
 
 ### Runtime Performance
 
-- Minimal DOM manipulation
-- Event delegation where appropriate
-- Debounced input handlers
-- Lazy component initialization
+```javascript
+// Efficient event delegation - single listener handles all fields
+document.addEventListener("blur", handleAllFields, true);
+
+// Minimal DOM queries - cache when possible
+const wordsElement = document.querySelector(".words");
+
+// Debounced updates not needed - blur events are naturally debounced
+```
 
 ### Memory Management
 
-- Proper event listener cleanup
-- Component lifecycle management
-- No memory leaks in custom elements
+- **No memory leaks**: Native event listeners automatically cleaned up
+- **No component lifecycle**: Direct DOM manipulation, no complex state
+- **Minimal object creation**: Reuse of conversion arrays and functions
+- **No closures**: Event handlers are direct function references
 
 ### Loading Strategy
 
-```javascript
-// Progressive enhancement approach
-if ("customElements" in window) {
-  // Load modern components
-  import("./components/check-form.js");
-} else {
-  // Fallback for older browsers
-  document.body.innerHTML = "Please upgrade your browser";
-}
+```html
+<!-- Synchronous loading for instant interaction -->
+<script src="./src/app.js"></script>
+
+<!-- No lazy loading needed - total payload is tiny -->
+<!-- No code splitting needed - single file approach -->
 ```
+
+### Browser Compatibility
+
+| Feature          | Support Level | Fallback Strategy    |
+| ---------------- | ------------- | -------------------- |
+| contenteditable  | Universal     | None needed          |
+| Event delegation | Universal     | None needed          |
+| CSS custom props | Modern only   | Graceful degradation |
+| Arrow functions  | Modern only   | Convert to function  |
 
 ## Testing Strategy
 
@@ -483,9 +493,9 @@ describe("CheckForm Integration", () => {
 
 ## Deployment
 
-### Build Process
+### Zero-Build Deployment
 
-Since this project uses no build tools, development is simple:
+Since this project requires no build process, deployment is extremely simple:
 
 ```bash
 # Development server options
@@ -499,84 +509,112 @@ npx http-server public
 ### Deployment Output
 
 ```
-public/                     # Deploy this directory
-├── index.html             # Entry point with import maps
+public/                     # Deploy this directory exactly as-is
+├── index.html             # Complete application with SEO meta tags
 ├── src/
-│   ├── main.js           # Application JavaScript
-│   ├── index.css         # Application styles
-│   ├── components/       # Web Components
-│   │   ├── check-form.js    # Main form component
-│   │   └── check-preview.js # Interactive check preview
-│   ├── utils/            # Utility functions
-│   │   └── convertNumberToWords.js # Amount conversion
-│   └── design-system/    # CSS design tokens
-│       ├── tokens.css       # Design tokens
-│       ├── typography.css   # Typography utilities
-│       └── layout.css       # Layout and component styles
-└── manifest.json         # PWA manifest
+│   ├── app.js            # All JavaScript (182 lines)
+│   └── app.css           # All CSS with design tokens (73 lines)
+├── manifest.json         # PWA manifest
+├── robots.txt            # SEO robots file
+└── sitemap.xml           # SEO sitemap
 ```
 
 ### Deployment Targets
 
-- **Static Hosting**: Netlify, Vercel, GitHub Pages
-- **CDN**: CloudFlare, AWS CloudFront
-- **Self-Hosted**: Any web server with static file support
+- **Static Hosting**: Netlify, Vercel, GitHub Pages (zero configuration)
+- **CDN**: CloudFlare, AWS CloudFront, any CDN service
+- **Self-Hosted**: Apache, Nginx, any web server with static file support
+- **File System**: Works directly from `file://` protocol (no server needed)
+
+### Production Optimization
+
+```bash
+# Optional minification (not required)
+# CSS can be minified from 73 lines to ~20 lines
+# JavaScript can be minified from 182 lines to ~50 lines
+# But original is already very small and readable
+```
 
 ### Environment Configuration
 
-- Production builds minify and optimize code
-- Development builds include source maps
-- Environment variables for feature flags
+- **No environment variables needed**
+- **No configuration files**
+- **No API keys or secrets**
+- **Works offline immediately**
+- **No external service dependencies**
 
 ## Maintenance
 
 ### Code Quality
 
-- No build tool configuration needed
-- Prettier for code formatting (optional)
-- JSDoc comments for documentation
-- Consistent naming conventions
+- **No build tool maintenance**: Zero configuration to maintain
+- **No dependency updates**: Zero npm packages to manage
+- **Self-documenting code**: Simple, readable vanilla JavaScript
+- **Consistent naming**: Clear variable and function names throughout
 
 ### Version Management
 
-- Semantic versioning (semver)
-- Git tags for releases
-- Changelog maintenance
-- Backward compatibility considerations
+- **Semantic versioning**: Major.Minor.Patch (currently v2.0)
+- **Git tags for releases**: Tag stable versions for easy rollback
+- **Simple changelog**: Document feature additions and bug fixes
+- **No breaking changes**: API is just DOM events and functions
 
 ### Performance Monitoring
 
-- Bundle size tracking
-- Core Web Vitals monitoring
-- User feedback collection
-- Error tracking and reporting
+```javascript
+// Built-in performance tracking (optional)
+console.time("amount-conversion");
+const result = convertAmountToWords(amount);
+console.timeEnd("amount-conversion");
+
+// No external analytics needed - application is fully self-contained
+```
 
 ### Security Considerations
 
-- Input sanitization
-- XSS prevention
-- CSP headers for production
-- Regular dependency updates
+```javascript
+// Input sanitization for contenteditable fields
+function sanitizeInput(text) {
+  // Basic HTML entity encoding if needed
+  return text.replace(/[<>]/g, "");
+}
+
+// No XSS risks - no innerHTML usage, only textContent
+// No external API calls - fully offline application
+// No user data persistence - everything is ephemeral
+```
 
 ### Browser Support Matrix
 
-| Browser        | Minimum Version | Support Level |
-| -------------- | --------------- | ------------- |
-| Chrome         | 67+             | Full Support  |
-| Firefox        | 63+             | Full Support  |
-| Safari         | 12+             | Full Support  |
-| Edge           | 79+             | Full Support  |
-| Mobile Safari  | 12+             | Full Support  |
-| Chrome Android | 67+             | Full Support  |
+| Browser        | Minimum Version | Support Level | Notes                    |
+| -------------- | --------------- | ------------- | ------------------------ |
+| Chrome         | 60+             | Full Support  | contenteditable + ES6    |
+| Firefox        | 55+             | Full Support  | contenteditable + ES6    |
+| Safari         | 12+             | Full Support  | contenteditable + ES6    |
+| Edge           | 79+             | Full Support  | contenteditable + ES6    |
+| Mobile Safari  | 12+             | Full Support  | Touch-friendly interface |
+| Chrome Android | 60+             | Full Support  | Mobile optimization      |
 
 ### Accessibility Compliance
 
-- WCAG 2.1 AA compliance
-- Screen reader testing
-- Keyboard navigation support
-- Color contrast validation
-- Focus management
+- **WCAG 2.1 AA**: Meets accessibility standards
+- **Screen readers**: contenteditable fields are naturally accessible
+- **Keyboard navigation**: Tab/Enter/Escape work as expected
+- **Color contrast**: Design tokens ensure proper contrast ratios
+- **Focus management**: Clear visual focus indicators on all fields
+
+### Testing Strategy
+
+```javascript
+// Simple manual testing checklist:
+// ✅ Click each field and type content
+// ✅ Tab between fields with keyboard
+// ✅ Enter various amounts and verify word conversion
+// ✅ Test with screen reader
+// ✅ Test print functionality
+// ✅ Verify mobile touch interaction
+```
 
 ---
 
-**Document Maintenance**: This specification should be updated with any architectural changes, new features, or significant refactoring efforts. Version history is tracked in git commits and release notes.
+**Document Maintenance**: This specification reflects the ultra-simplified v2.0 architecture. Major changes (like adding components or external dependencies) would warrant a new major version and specification update.

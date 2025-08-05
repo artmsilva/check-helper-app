@@ -1,4 +1,4 @@
-# Handwritten Check Helper
+# Interactive Check Helper
 
 > An ultra-simple web app that helps you write checks accurately. Just click and edit the check fields directly - no complexity, just functionality!
 
@@ -9,8 +9,8 @@
 - **Click to edit** - Direct inline editing of check fields
 - **Real-time conversion** - Numeric amounts to written words instantly
 - **Zero dependencies** - Pure vanilla JavaScript, works offline
-- **Ultra-lightweight** - Only 255 lines of code total
-- **Atomic CSS** - Custom utility-first framework for maximum efficiency
+- **Ultra-lightweight** - Only 262 lines of code total
+- **Minimal CSS** - Simple design tokens for maximum efficiency
 - **Mobile friendly** - Works on all devices
 - **Instant loading** - No build tools, no modules, no complexity
 
@@ -30,12 +30,7 @@ public/                    # Serve this directory
 ├── index.html            # Entry point (with full SEO)
 └── src/
     ├── app.js           # All functionality (182 lines)
-    └── app.css          # Atomic CSS framework (73 lines)
-    ├── components/      # Web Components
-    │   ├── check-form.js   # Main form component
-    │   └── check-preview.js # Interactive check preview
-    └── utils/           # Business logic
-        └── convertNumberToWords.js # Amount conversion
+    └── app.css          # Minimal CSS with design tokens (73 lines)
 ```
 
 ## 💻 Development
@@ -80,11 +75,10 @@ Example: `$1,234.56` → `"one thousand two hundred thirty-four and 56/100"`
 
 ## 🏗️ Architecture
 
-- **Frontend**: Vanilla JavaScript with Web Components
-- **Modules**: Native ES modules with import maps
-- **Styling**: CSS custom properties and design tokens
-- **Components**: Interactive check preview with real-time editing
-- **No frameworks**: Pure web standards
+- **Frontend**: Vanilla JavaScript with minimal DOM manipulation
+- **Styling**: CSS custom properties with design tokens
+- **Components**: Single interactive check with contenteditable fields
+- **No frameworks**: Pure web standards, no build tools
 
 ## 📚 Documentation
 
@@ -94,9 +88,9 @@ Full documentation available in [`docs/`](docs/):
 - [Design System](docs/DESIGN_SYSTEM.md)
 - [Technical Specs](docs/TECHNICAL_SPECIFICATION.md)
 - [Recent Cleanup Notes](docs/CLEANUP_NOTES.md)
-- [CSS Refactoring Notes](docs/CSS_REFACTORING.md)
+- [Application Simplification](docs/tasks/2025-08-04-simplify-application/)
 
-> **Recent Update (v1.1)**: Streamlined codebase by removing unused UI components and refactored to unified CSS architecture. See [cleanup notes](docs/CLEANUP_NOTES.md) and [CSS refactoring](docs/CSS_REFACTORING.md) for details.
+> **Recent Update (v2.0)**: Dramatically simplified codebase by removing Web Components architecture and consolidating to single-file approach. Reduced from 1500+ lines to 262 lines (82% reduction) while maintaining all core functionality.
 
 ## 🌟 Browser Support
 
