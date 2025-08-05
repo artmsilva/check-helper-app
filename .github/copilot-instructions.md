@@ -4,34 +4,31 @@
 
 **BEFORE EACH CHAT SESSION**, the model must:
 
-1. **Read Project Documentation**: Review all files in `docs/` directory for current project state
+1. **Read Project Documentation**: Review core docs in `docs/` directory (5 minute total read):
 
-   - `README.md` - Project overview and setup
-   - `TECHNICAL_SPECIFICATION.md` - Architecture and components
-   - `DESIGN_SYSTEM.md` - Styling guidelines and patterns
-   - `CLEANUP_NOTES.md` - Recent changes and removals
-   - `CSS_REFACTORING.md` - Current CSS architecture
-   - Any task directories in `docs/tasks/` for recent changes
+   - `README.md` - Project overview and architecture (2 min)
+   - `DESIGN_SYSTEM.md` - Styling system and tokens (1.5 min)
+   - `TECHNICAL_SPECIFICATION.md` - API reference and implementation (1.5 min)
+   - Recent task directories in `docs/tasks/` for latest changes
 
 2. **Understand Current State**: Check recent task directories to understand:
 
-   - What components have been removed/added
-   - Recent architectural changes
-   - Current file structure and organization
-   - Active features and deprecated functionality
+   - Latest architectural simplifications (v2.0 = 82% code reduction)
+   - Current single-file approach (262 lines total)
+   - Removed features (Web Components, complex UI, build tools)
+   - Active features (interactive check editing, amount conversion)
 
 3. **Review File Structure**: Examine `public/src/` to understand:
 
-   - Available components (`components/` directory)
-   - Utility functions (`utils/` directory)
-   - Current CSS organization (`styles.css` with layers)
-   - Import map configuration
+   - `app.js` - All JavaScript functionality (182 lines)
+   - `app.css` - All styling with design tokens (73 lines)
+   - `index.html` - Complete application with contenteditable check
 
 4. **Check Tools Directory**: Review `tools/` for available development tools:
    - CSS linter and auto-fixer (`tools/css-linter/`)
    - Other development utilities and scripts
 
-**This ensures accurate, context-aware assistance that aligns with the current project state.**
+**This ensures accurate, context-aware assistance that aligns with the current ultra-simplified project state.**
 
 ## 🚨 FILE CREATION POLICY
 
@@ -57,151 +54,146 @@
 
 ## Project Overview
 
-This is an **Interactive Check Helper** - a vanilla JavaScript web application that helps users write checks accurately with real-time amount-to-words conversion and interactive editing capabilities.
+This is an **Interactive Check Helper** - an ultra-minimal vanilla JavaScript web application that helps users write checks accurately with real-time amount-to-words conversion and direct field editing.
 
 ### Key Characteristics
 
-- **Framework-free**: Pure vanilla JavaScript with Web Components
-- **Build-tool-free**: Uses native ES modules with import maps
-- **Educational focus**: Clean, readable code for learning modern web development
-- **Interactive**: Click-and-edit check preview with real-time updates
-- **Lightweight**: Minimal dependencies, fast loading, works offline
+- **Ultra-minimal**: Only 262 lines of code total (82% reduction from original)
+- **Framework-free**: Pure vanilla JavaScript with DOM events
+- **Build-tool-free**: No modules, no build process, works from file://
+- **Educational focus**: Clean, readable code demonstrating web fundamentals
+- **Interactive**: Click-and-edit check fields with real-time updates
+- **Lightweight**: Zero dependencies, instant loading, works offline
 
 ## Architecture & Design Principles
 
 ### Core Technologies
 
-- **JavaScript**: ES2022+ with native modules, Web Components API
-- **CSS**: Modern CSS with `@layer` for cascade control, CSS custom properties
-- **HTML**: Semantic markup with custom elements
-- **Deployment**: Static hosting (Vercel) with zero configuration
+- **JavaScript**: Vanilla ES2020+ with event delegation and DOM manipulation
+- **CSS**: CSS custom properties with minimal design tokens
+- **HTML**: Semantic markup with contenteditable elements
+- **Deployment**: Static hosting (any CDN) with zero configuration
 
-### Component Structure
+### File Structure
 
 ```
-public/src/
-├── main.js                    # Application entry point
-├── styles.css                 # Unified layered stylesheet (@layer)
-├── components/
-│   ├── check-form.js         # Main form container component
-│   └── check-preview.js      # Interactive check visualization
-└── utils/
-    └── convertNumberToWords.js # Amount-to-words conversion
+public/
+├── index.html              # Complete application
+└── src/
+    ├── app.js             # All JavaScript functionality (182 lines)
+    └── app.css            # All styling with design tokens (73 lines)
 ```
 
-### CSS Layer Architecture
+### Design Token System
 
 ```css
-@layer reset, tokens, base, layout, components, utilities;
+:root {
+  --c-base: #2d3748; /* Text & borders */
+  --c-accent: #4299e1; /* Interactive highlights */
+  --c-bg: #f7fafc; /* Backgrounds */
+}
 ```
-
-- **Reset**: CSS normalization
-- **Tokens**: Design system tokens (colors, spacing, typography)
-- **Base**: Base HTML element styles
-- **Layout**: Application layout components
-- **Components**: Interactive check component styles
-- **Utilities**: Print styles, responsive design, utilities
 
 ## Code Guidelines
 
 ### JavaScript
 
-- Use **ES2022+ features** (modern syntax, modules, optional chaining)
-- Follow **Web Components** patterns for custom elements
-- Use **event-driven architecture** for component communication
-- Prefer **declarative over imperative** approaches
-- Keep **business logic** in utility functions
-- Use **semantic variable names** and comprehensive JSDoc comments
+- Use **modern JavaScript** (ES2020+) but keep it simple
+- Use **event delegation** for handling contenteditable field interactions
+- Prefer **direct DOM manipulation** over complex abstractions
+- Keep **business logic** embedded (amount conversion)
+- Use **semantic variable names** and clear comments
+- Handle errors gracefully with fallbacks
 
 ### CSS
 
-- Follow **@layer** organization (add new styles to appropriate layers)
-- Use **CSS custom properties** from the tokens layer
-- Maintain **component-scoped** styling
-- Ensure **responsive design** and **print compatibility**
+- Use **CSS custom properties** for design tokens
+- Keep styles **minimal but complete**
+- Ensure **responsive design** without media queries when possible
 - Support **dark mode** with `prefers-color-scheme`
 - Focus on **check realism** (authentic bank check appearance)
+- Use **color-mix()** for subtle color variations
 
-### HTML/Web Components
+### HTML
 
 - Use **semantic HTML** elements where possible
-- Follow **accessibility** best practices (ARIA, focus management)
-- Implement **progressive enhancement**
-- Use **custom elements** for reusable components
-- Maintain **clean attribute interfaces**
+- Use **contenteditable** for direct field editing
+- Follow **accessibility** best practices
+- Keep **data attributes** for field configuration
+- Maintain **clean, readable structure**
 
 ## Development Practices
 
 ### File Organization
 
 - **Single responsibility**: Each file has one clear purpose
-- **Import maps**: Use clean import paths (`components/`, `utils/`)
-- **Layered CSS**: All styles in `styles.css` with proper layers
-- **Documentation**: Keep docs in `docs/` directory updated
+- **No modules**: All JavaScript in single `app.js` file
+- **Minimal CSS**: All styles in single `app.css` file
+- **Documentation**: Keep docs in `docs/` directory streamlined
 
 ### Testing & Quality
 
 - **Manual testing**: Cross-browser compatibility, print testing
 - **Accessibility**: Screen reader support, keyboard navigation
-- **Performance**: Minimal bundle size, fast loading
-- **Mobile-first**: Responsive design with touch-friendly interactions
+- **Performance**: Minimal code size, instant loading
+- **Mobile-first**: Touch-friendly contenteditable interactions
 
 ### Code Style
 
 - **2-space indentation** for JavaScript and CSS
-- **Descriptive comments** for complex logic
-- **Error handling** with graceful degradation
-- **Console logging** for debugging (remove in production)
+- **Clear, descriptive comments** for key functionality
+- **Graceful error handling** with sensible defaults
+- **No console logging** in production code
 
 ## Key Features & Components
 
-### CheckForm Component (`check-form.js`)
+### Interactive Check Interface (`index.html`)
 
-- Main container for check data management
-- Coordinates with CheckPreview component
-- Handles user interactions and validation
-- Emits custom events for data changes
-
-### CheckPreview Component (`check-preview.js`)
-
-- **Interactive check visualization** with realistic appearance
-- **Inline editing**: Click any field to edit directly
+- **Single HTML document** with complete application
+- **Contenteditable fields**: Click any field to edit directly
 - **Real-time conversion**: Automatically converts amounts to words
-- **Visual feedback**: Hover/focus states for editable fields
-- **Print-ready**: Optimized for print layouts
+- **Realistic check design**: Authentic bank check appearance
+- **Print-ready**: Optimized for browser printing
 
-### Amount Conversion (`convertNumberToWords.js`)
+### JavaScript Functionality (`app.js`)
 
-- Converts numeric amounts to written English words
-- Handles complex number formatting for checks
-- Supports negative numbers and decimal places
-- Example: `123.45` → `"one hundred twenty-three and 45/100"`
+- **Event delegation**: Single event handlers for all contenteditable fields
+- **Amount conversion**: Embedded logic for number-to-words conversion
+- **Field management**: Placeholder handling and validation
+- **Error handling**: Graceful fallbacks for invalid input
+
+### Styling System (`app.css`)
+
+- **Design tokens**: Three-color system with dark mode support
+- **Interactive states**: Hover, focus, and editing feedback
+- **Responsive design**: Works on mobile and desktop
+- **Print optimization**: Clean printing without interactive elements
 
 ## Common Tasks & Patterns
 
-### Adding New Components
+### Making Code Changes
 
-1. Create in `components/` directory
-2. Follow Web Components pattern (extend HTMLElement)
-3. Add styles to appropriate CSS layer
-4. Import in `main.js` if needed
-5. Update documentation
+1. Edit `app.js` for functionality changes
+2. Edit `app.css` for styling changes
+3. Edit `index.html` for structure changes
+4. Test manually in browser
+5. Update documentation if needed
+
+### Adding New Features
+
+1. Identify if it affects HTML structure, JavaScript logic, or CSS styling
+2. Keep changes minimal and focused
+3. Use existing design tokens for consistency
+4. Test interactive behavior thoroughly
+5. Ensure mobile and print compatibility
 
 ### Styling Changes
 
-1. Identify appropriate CSS layer (components, layout, utilities)
-2. Use design tokens from tokens layer
-3. Test in both light and dark modes
-4. Verify print compatibility
-5. Test responsive behavior
-
-### Business Logic Updates
-
-1. Keep pure functions in `utils/` directory
-2. Add comprehensive error handling
-3. Include JSDoc documentation
-4. Test edge cases thoroughly
-5. Update component interfaces if needed
+1. Use design tokens (--c-base, --c-accent, --c-bg)
+2. Test in both light and dark modes
+3. Verify contenteditable field interactions
+4. Check responsive behavior
+5. Test print appearance
 
 ## Browser Support & Compatibility
 
@@ -213,11 +205,11 @@ public/src/
 
 ### Required Features
 
-- ES Modules with import maps
-- Web Components (Custom Elements v1)
+- contenteditable elements
 - CSS Custom Properties
 - CSS Grid and Flexbox
-- CSS @layer (graceful degradation for older browsers)
+- Modern JavaScript (ES2020+)
+- color-mix() for color blending (graceful degradation)
 
 ## Deployment & Performance
 
@@ -297,27 +289,7 @@ This ensures every agent interaction is tracked, documented, and can be referenc
 
 ## Common Issues & Solutions
 
-### Import Map Issues
-
-- Ensure paths are relative to `public/` directory
-- Import maps require a server (not file:// protocol)
-- Use import maps for clean component imports
-
-### CSS Layer Support
-
-- Older browsers ignore @layer but styles still work
-- Layer order determines cascade precedence
-- Add new styles to appropriate layer
-
-### Component Communication
-
-- Use custom events for parent-child communication
-- Avoid tight coupling between components
-- Prefer data attributes for configuration
-
-## Security & Best Practices
-
-### Input Handling
+### Input Handling Issues
 
 - **Sanitize user input** (especially for check fields)
 - **Validate numeric inputs** for amount conversion
@@ -328,18 +300,25 @@ This ensures every agent interaction is tracked, documented, and can be referenc
 
 - **Minimize DOM manipulation**
 - **Use event delegation** where appropriate
-- **Lazy load** components if needed
 - **Optimize for Core Web Vitals**
+
+### Accessibility Compliance
+
+- **WCAG 2.1 AA**: Meets accessibility standards
+- **Screen readers**: contenteditable fields are naturally accessible
+- **Keyboard navigation**: Tab/Enter/Escape work as expected
+- **Color contrast**: Design tokens ensure proper contrast ratios
+- **Focus management**: Clear visual focus indicators on all fields
 
 ## Recent Changes & Maintenance
 
-### v1.1 (August 2025)
+### v2.0 (August 2025)
 
 - ✅ Removed unused UI components (form-input, form-label, form-button, layout-components)
-- ✅ Simplified to 2 core components (check-form, check-preview)
-- ✅ Refactored CSS to single layered stylesheet
-- ✅ Eliminated 70% of unused utility classes
-- ✅ Improved performance and maintainability
+- ✅ Eliminated Web Components architecture completely
+- ✅ Consolidated to single-file approach (app.js + app.css)
+- ✅ Reduced from 1500+ lines to 262 lines (82% code reduction)
+- ✅ Improved performance and maintainability dramatically
 
 ### Active Features
 
@@ -363,10 +342,10 @@ python3 -m http.server 8000
 
 ### Key Files to Know
 
-- `main.js` - Application entry point
-- `check-preview.js` - Core interactive component
-- `styles.css` - All styling with @layer organization
-- `convertNumberToWords.js` - Business logic
+- `app.js` - All JavaScript functionality (182 lines)
+- `app.css` - All styling with design tokens (73 lines)
+- `index.html` - Complete application with contenteditable check
+- `convertNumberToWords.js` - Business logic (embedded in app.js)
 
 ### Adding Features
 

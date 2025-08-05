@@ -82,13 +82,11 @@ Example: `$1,234.56` → `"one thousand two hundred thirty-four and 56/100"`
 
 ## 📚 Documentation
 
-Full documentation available in [`docs/`](docs/):
+**Quick read (under 5 minutes total)**:
 
-- [Complete Guide](docs/README.md)
-- [Design System](docs/DESIGN_SYSTEM.md)
-- [Technical Specs](docs/TECHNICAL_SPECIFICATION.md)
-- [Recent Cleanup Notes](docs/CLEANUP_NOTES.md)
-- [Application Simplification](docs/tasks/2025-08-04-simplify-application/)
+- **[Getting Started](docs/README.md)** - Project overview and architecture (2 min)
+- **[Design System](docs/DESIGN_SYSTEM.md)** - Styling and customization (1.5 min)
+- **[API Reference](docs/TECHNICAL_SPECIFICATION.md)** - Technical implementation (1.5 min)
 
 > **Recent Update (v2.0)**: Dramatically simplified codebase by removing Web Components architecture and consolidating to single-file approach. Reduced from 1500+ lines to 262 lines (82% reduction) while maintaining all core functionality.
 

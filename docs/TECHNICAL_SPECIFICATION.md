@@ -1,59 +1,155 @@
-# Interactive Check Helper - Technical Specification
+# API Reference - Interactive Check Helper
 
-**Version:** 2.0  
-**Date:** August 4, 2025  
-**Status:** Production Ready
+> **Read time: ~1.5 minutes** - Technical implementation details for developers.
 
-## Table of Contents
+## 🏗️ Architecture Overview
 
-1. [System Overview](#system-overview)
-2. [Architecture Design](#architecture-design)
-3. [Implementation Details](#implementation-details)
-4. [API Documentation](#api-documentation)
-5. [Data Flow](#data-flow)
-6. [Error Handling](#error-handling)
-7. [Performance Considerations](#performance-considerations)
-8. [Testing Strategy](#testing-strategy)
-9. [Deployment](#deployment)
-10. [Maintenance](#maintenance)
-
-## System Overview
-
-### High-Level Architecture
-
-The Interactive Check Helper is an ultra-minimal client-side application built with vanilla JavaScript. The application uses a single-file approach with direct DOM manipulation for maximum simplicity and performance.
+**Ultra-minimal approach**: 262 lines total across 3 files.
 
 ```
-┌─────────────────────────────────────┐
-│            Browser                  │
-├─────────────────────────────────────┤
-│        Application Layer            │
-│  ┌─────────────────────────────────┐ │
-│  │     Single HTML Document        │ │
-│  │   with Inline JavaScript        │ │
-│  └─────────────────────────────────┘ │
-├─────────────────────────────────────┤
-│        Business Logic Layer        │
-│  ┌─────────────────────────────────┐ │
-│  │  Embedded Amount Conversion     │ │
-│  └─────────────────────────────────┘ │
-├─────────────────────────────────────┤
-│         Presentation Layer          │
-│  ┌─────────────────────────────────┐ │
-│  │      Minimal CSS Styling        │ │
-│  └─────────────────────────────────┘ │
-└─────────────────────────────────────┘
+public/
+├── index.html    # Complete app with contenteditable check
+├── src/
+│   ├── app.js    # All JavaScript (182 lines)
+│   └── app.css   # All styling (73 lines)
 ```
 
-### Technology Stack Details
+**No frameworks, no build tools, no dependencies.**
 
-| Layer         | Technology      | Version | Purpose                           |
-| ------------- | --------------- | ------- | --------------------------------- |
-| Runtime       | Modern Browsers | ES2020+ | Application execution environment |
-| Module System | None            | N/A     | Single file approach              |
-| Components    | Native DOM      | Native  | Direct contenteditable elements   |
-| Styling       | CSS3            | Native  | Minimal design tokens             |
-| Deployment    | Static Hosting  | Any     | File serving (Vercel, etc.)       |
+## 🔧 Core Implementation
+
+### Event System
+
+```javascript
+// Single event delegation handles all field interactions
+document.addEventListener(
+  "blur",
+  (e) => {
+    if (e.target.matches("[contenteditable]")) {
+      const text = e.target.textContent.trim();
+      const placeholder = e.target.dataset.placeholder;
+
+      // Handle empty fields
+      if (!text) {
+        e.target.textContent = placeholder;
+        e.target.classList.add("placeholder", "c-muted");
+      } else {
+        e.target.classList.remove("placeholder", "c-muted");
+      }
+
+      // Convert amounts to words
+      if (text && !isNaN(parseFloat(text))) {
+        updateAmountWords(text);
+      }
+    }
+  },
+  true
+);
+```
+
+### Amount Conversion API
+
+```javascript
+convertAmountToWords(123.45); // → "one hundred twenty-three and 45/100"
+convertAmountToWords(""); // → "Amount in words"
+convertAmountToWords("abc"); // → "Amount in words" (graceful failure)
+```
+
+**Supports**: 0 to 999 trillion with 2 decimal places.
+
+### Field State Management
+
+```javascript
+// Placeholder state
+<span contenteditable="true"
+      class="placeholder c-muted"
+      data-placeholder="Click to enter payee">
+  Click to enter payee
+</span>
+
+// Active state (user typing)
+<span contenteditable="true">John Doe</span>
+```
+
+## 🎯 Key Functions
+
+### Input Handling
+
+- **Focus**: Clear placeholder text, remove muted styling
+- **Blur**: Validate input, restore placeholder if empty, convert amounts
+- **Enter**: Submit field (blur and move focus)
+
+### Amount Processing
+
+```javascript
+// Real-time conversion pipeline
+Input → parseFloat() → Split integer/cents → Convert to words → Update DOM
+```
+
+### Error Handling
+
+- **Invalid input**: Graceful fallback to placeholder
+- **Large numbers**: Handles up to 999 trillion
+- **Edge cases**: Empty, null, undefined → default placeholder
+
+## 🚀 Performance Characteristics
+
+- **Bundle size**: 262 lines unminified (~8KB total)
+- **Load time**: Instantaneous (no network requests)
+- **Memory**: Minimal (no component state or virtual DOM)
+- **Runtime**: O(1) for field updates, O(log n) for amount conversion
+
+## 🌐 Browser Support
+
+| Feature          | Chrome       | Firefox      | Safari       | Edge         |
+| ---------------- | ------------ | ------------ | ------------ | ------------ |
+| contenteditable  | ✅ Universal | ✅ Universal | ✅ Universal | ✅ Universal |
+| CSS custom props | ✅ 49+       | ✅ 31+       | ✅ 9.1+      | ✅ 16+       |
+| Event delegation | ✅ Universal | ✅ Universal | ✅ Universal | ✅ Universal |
+| color-mix()      | ✅ 111+      | ✅ 113+      | ✅ 16.2+     | ✅ 111+      |
+
+**Minimum viable**: Any browser supporting contenteditable (IE9+)
+**Full experience**: Modern browsers with CSS custom properties
+
+## 🔒 Security Model
+
+- **No external requests**: Fully offline application
+- **No user data storage**: Everything is ephemeral
+- **No innerHTML usage**: Only textContent manipulation
+- **Input sanitization**: Basic validation on numeric fields
+
+## 📦 Deployment
+
+```bash
+# Development
+python3 -m http.server 3000 --directory public
+
+# Production
+# Just upload public/ directory to any static host
+# No build process required
+```
+
+**Works on**: Vercel, Netlify, GitHub Pages, any CDN, or file:// protocol.
+
+## 🧪 Testing Strategy
+
+```javascript
+// Manual testing checklist (no test framework needed)
+// ✅ Click each field and verify editing works
+// ✅ Tab between fields with keyboard
+// ✅ Test amount conversion with various inputs
+// ✅ Verify mobile touch interaction
+// ✅ Test print functionality
+```
+
+---
+
+**Philosophy**: Keep it simple. Every line of code serves the core check functionality.
+| Runtime | Modern Browsers | ES2020+ | Application execution environment |
+| Module System | None | N/A | Single file approach |
+| Components | Native DOM | Native | Direct contenteditable elements |
+| Styling | CSS3 | Native | Minimal design tokens |
+| Deployment | Static Hosting | Any | File serving (Vercel, etc.) |
 
 ## Architecture Design
 

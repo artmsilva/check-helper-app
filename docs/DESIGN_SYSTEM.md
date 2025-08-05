@@ -1,29 +1,133 @@
-# Design System Documentation
+# Design System - Quick Reference
 
-## Overview
+> **Read time: ~1.5 minutes** - Everything about styling the check interface.
 
-This design system provides minimal design tokens and utilities for the Interactive Check Helper application. The system focuses on essential styling for the interactive check preview with maximum simplicity and maintainability.
+## 🎨 Color System (3 tokens only)
 
-## Architecture
+```css
+:root {
+  --c-base: #2d3748; /* Text & borders */
+  --c-accent: #4299e1; /* Interactive highlights */
+  --c-bg: #f7fafc; /* Backgrounds */
+}
 
+/* Dark mode (automatic) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-base: #f7fafc;
+    --c-accent: #90cdf4;
+    --c-bg: #2d3748;
+  }
+}
 ```
-src/
-└── app.css              # Complete styling system (73 lines)
-    ├── Design Tokens    # CSS custom properties
-    ├── Reset & Base     # Minimal normalization
-    ├── Layout Classes   # Essential utilities
-    ├── Check Styling    # Interactive check appearance
-    └── Editable Fields  # contenteditable field styling
+
+## ✏️ Interactive Fields
+
+```css
+[contenteditable] {
+  background: color-mix(in srgb, var(--c-accent) 10%, var(--c-bg) 90%);
+  padding: 2px 4px;
+  border-radius: 2px;
+  cursor: text;
+  transition: opacity 0.2s;
+}
+
+[contenteditable]:focus {
+  outline: 2px solid var(--c-accent);
+  background: var(--c-accent);
+  color: var(--c-bg);
+}
 ```
 
-## Core Philosophy
+## 🏦 Check Layout
 
-The design system follows these principles:
+```css
+.check-container {
+  width: min(600px, 100%); /* Responsive */
+  height: 250px; /* Realistic proportions */
+  border: 2px solid color-mix(in srgb, var(--c-base) 80%, var(--c-accent) 20%);
+  font-family: monospace; /* Authentic check font */
+  font-size: 14px;
+  padding: 15px;
+}
+```
 
-- **Minimal but Complete**: Only essential styles, no unused code
-- **Token-Based**: Consistent values through CSS custom properties
-- **Interactive-First**: Optimized for contenteditable field interaction
-- **Realistic Check**: Authentic bank check appearance and proportions
+## 🔧 Utility Classes
+
+### Layout
+
+```css
+.flex-between    /* display: flex; justify-content: space-between */
+/* display: flex; justify-content: space-between */
+.flex-center     /* display: flex; justify-content: space-between; align-items: center */
+.text-center     /* text-align: center */
+.text-right; /* text-align: right */
+```
+
+### Spacing
+
+```css
+.mb-15           /* margin-bottom: 15px */
+/* margin-bottom: 15px */
+.pb-5            /* padding-bottom: 5px */
+.p-15; /* padding: 15px */
+```
+
+### Typography
+
+```css
+.bank-info       /* font-size: 12px; text-align: right */
+/* font-size: 12px; text-align: right */
+.check-number    /* font-weight: bold; font-size: 16px */
+.micr; /* font-size: 12px; letter-spacing: 2px */
+```
+
+## 🎯 Usage Examples
+
+### Editable Field
+
+```html
+<span
+  contenteditable="true"
+  class="placeholder c-muted"
+  data-placeholder="Click to enter payee"
+>
+  Click to enter payee
+</span>
+```
+
+### Color Mixing
+
+```css
+/* Subtle backgrounds */
+background: color-mix(in srgb, var(--c-accent) 10%, var(--c-bg) 90%);
+
+/* Muted text */
+color: color-mix(in srgb, var(--c-base) 50%, var(--c-accent) 50%);
+```
+
+## 🎨 Customization
+
+Want different colors? Just override the tokens:
+
+```css
+:root {
+  --c-base: #1a202c; /* Darker text */
+  --c-accent: #805ad5; /* Purple accent */
+  --c-bg: #edf2f7; /* Light gray background */
+}
+```
+
+## ♿ Accessibility Built-in
+
+- High contrast mode support
+- Focus indicators on all interactive elements
+- Reduced motion support
+- Screen reader friendly contenteditable fields
+
+---
+
+**Design Philosophy**: Minimal but complete. Every class serves the core check functionality.
 
 ## Design Tokens
 
